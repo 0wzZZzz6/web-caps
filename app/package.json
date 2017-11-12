@@ -1,0 +1,12 @@
+{
+  "name": "capstone-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "capstone project",
+  "license": "ISC",
+  "scripts": {
+    "postinstall": "bower install",
+    "prestart": "",
+    "start": "http-server -a localhost -p 8011 -c-1"
+  }
+}

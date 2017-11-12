@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="capstone-web">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuroyBukidnon</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css" type="text/css"/>
+  <link rel="stylesheet" href="bower_components/angular-right-click/src/css/ng-right-click.css">
+  <link rel="stylesheet" href="node_modules/angular-material-time-picker/dist/md-time-picker.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+
+  <tool-bar></tool-bar>
+
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-animate/angular-animate.js"></script>
+  <script src="/bower_components/angular-aria/angular-aria.js"></script>
+  <script src="/bower_components/angular-material/angular-material.js"></script>
+  <script src="/bower_components/angular-messages/angular-messages.js"></script>
+  <script src="/bower_components/angular-route/angular-route.js"></script>
+  <script src="/bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+  <script src="/bower_components/moment/min/moment.min.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/ng-file-upload/ng-file-upload-all.min.js"></script>
+
+  <script src="/node_modules/angular-material-time-picker/dist/md-time-picker.js"></script>
+
+  <script src="js/app.module.js"></script>
+  <script src="js/app.config.js"></script>
+  <script src="js/app.directive.js"></script>
+
+  <script src="views/toolbar/toolbar.module.js"></script>
+  <script src="views/toolbar/toolbar.component.js"></script>
+
+  <script src="views/event/event.module.js"></script>
+  <script src="views/event/event.component.js"></script>
+
+  <script src="views/municipality/municipality.module.js"></script>
+  <script src="views/municipality/municipality.component.js"></script>
+
+  <script src="views/municipalityDetail/municipalityDetail.module.js"></script>
+  <script src="views/municipalityDetail/municipalityDetail.component.js"></script>
+
+  <script src="views/dialog/event/eventDialog.controller.js"></script>
+  <script src="views/dialog/municipality/municipalityDetailDialog.controller.js"></script>
+
+  <!-- AngularFire -->
+  <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-messaging.js"></script>
+
+  <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAEvnODKAJ6c5FcJxJ5e5T2E00lKTlCDP0",
+    authDomain: "fir-storage-4b52d.firebaseapp.com",
+    databaseURL: "https://fir-storage-4b52d.firebaseio.com",
+    projectId: "fir-storage-4b52d",
+    storageBucket: "fir-storage-4b52d.appspot.com",
+    messagingSenderId: "527374314342"
+  };
+  firebase.initializeApp(config);
+  </script>
+
+</body>
+</html>
