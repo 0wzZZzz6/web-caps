@@ -1,0 +1,100 @@
+<md-dialog style="max-width: 100%; max-height: 100%; width: 100%; height: 100%; border-radius: 0;" class="fullscreen-dialog" aria-label="event dialog" flex="45">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button aria-label="Open for menu" class="md-icon-button" ng-click="closeDialog()">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <p class="dialogTitle">{{dialogTitle}}</p>
+      <span flex></span>
+      <md-button ng-click="uploadFile()">Submit</md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content layout-margin >
+    <div layout="row">
+      <md-card layout-padding layout="column" flex="50">
+        <div layout="column">
+          <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*">Choose Samples</md-button>
+          <div style="margin-bottom: 25px;">
+            <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+            style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+          </div>
+
+          <md-input-container class="md-block input-style" flex>
+            <label>Event Title</label>
+            <input ng-model="title">
+          </md-input-container>
+
+          <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
+            <label>Event Location</label>
+            <input ng-model="location">
+          </md-input-container>
+
+          <md-checkbox ng-model="allDay" aria-label="Checkbox All-day">
+            All-day
+          </md-checkbox>
+
+          <div layout="column" ng-hide="allDay">
+            <label>Date</label>
+            <div layout="row">
+              <md-datepicker ng-model="fromDate" md-placeholder="From"></md-datepicker>
+              <span flex="20"></span>
+              <md-datepicker ng-model="toDate" md-placeholder="To"></md-datepicker>
+            </div>
+
+            <label>Time</label>
+            <div layout="row">
+              <md-time-picker ng-model="time.from" message="message"></md-time-picker>
+              <span flex="10"></span>
+              <md-time-picker ng-model="time.to" message="message"></md-time-picker>
+            </div>
+          </div>
+
+          <div layout="column" ng-show="allDay">
+            <label>Date</label>
+            <div layout="row">
+              <md-datepicker ng-model="date" md-placeholder="Enter Date"></md-datepicker>
+            </div>
+            <label>Time</label>
+            <div layout="row">
+              <md-time-picker ng-model="time.from" message="message"></md-time-picker>
+              <span flex="10"></span>
+              <md-time-picker ng-model="time.to" message="message"></md-time-picker>
+            </div>
+          </div>
+
+          <div style="margin-top: 25px;">
+            <md-input-container class="md-block input-style" flex >
+              <label>Event Description</label>
+              <textarea ng-model="description" md-maxlength="150" rows="4" md-select-on-focus></textarea>
+            </md-input-container>
+          </div>
+        </div>
+      </md-card>
+
+      <md-card ng-show="add" layout-padding layout="column" flex="50">
+        <div layout="column">
+          <md-button class="md-raised" ngf-select="selectSample($files)" accept="image/*" ngf-multiple="true">Choose Samples</md-button>
+        </div>
+        <div ng-cloak="">
+          <md-grid-list  md-cols="4" md-row-height="4:4">
+            <md-grid-tile class="yellow" ng-repeat="file in fileList">
+              <img ngf-thumbnail="file || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+            </md-grid-tile>
+          </md-grid-list>
+        </div>
+      </md-card>
+
+      <md-card ng-show="edit" layout-padding layout="column" flex="50">
+        <div ng-cloak="">
+          <md-grid-list  md-cols="4" md-row-height="4:4">
+            <md-grid-tile class="yellow" ng-repeat="imageURL in imageURLS">
+              <img ng-src="{{imageURL}}" style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+            </md-grid-tile>
+          </md-grid-list>
+        </div>
+      </md-card>
+    </div>
+  </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,75 @@
+<div ng-controller="municipalityController">
+  <!-- <div layout="row"></div> -->
+
+  <!-- <md-grid-list md-cols="4" md-row-height="4:1" md-gutter="8px">
+  <md-grid-tile class="yellow" ng-repeat="item in municipalities" md-colspan="4">
+  <md-card>
+  <a href="#/municipality/{{item.id}}">
+  <p>
+  {{ item.municipality }}
+</p>
+</a>
+</md-card>
+</md-grid-tile>
+</md-grid-list> -->
+
+<md-grid-list  md-cols="6" md-row-height="fit" style="height: 550px;">
+  <md-grid-tile class="yellow" ng-repeat="item in municipalities" style="background: gray;">
+    <a href="#/municipality/{{item.id}}" style="text-decoration: none; color: black;">
+      <p>
+        {{ item.municipality }}
+      </p>
+    </a>
+  </md-grid-tile>
+</md-grid-list>
+
+
+
+<!-- <div layout="column" flex>
+<md-content layout="row" flex>
+<md-card ng-repeat="item in municipalities | limitTo : 4 : 0" flex="25">
+<a href="#/municipality/{{item.id}}">
+<p>
+{{ item.municipality }}
+</p>
+</a>
+</md-card>
+</md-content>
+<md-content layout="row">
+<md-card ng-repeat="item in municipalities | limitTo : 4 : 4" flex="25">
+<a href="#/municipality/{{item.id}}">
+<p>
+{{ item.municipality }}
+</p>
+</a>
+</md-card>
+</md-content>
+<md-content layout="row">
+<md-card ng-repeat="item in municipalities | limitTo : 4 : 8" flex="25">
+<a href="#/municipality/{{item.id}}">
+<p>
+{{ item.municipality }}
+</p>
+</a>
+</md-card>
+</md-content>
+<md-content layout="row">
+<md-card ng-repeat="item in municipalities | limitTo : 4 : 12" flex="25">
+<a href="#/municipality/{{item.id}}">
+<p>
+{{ item.municipality }}
+</p>
+</a>
+</md-card>
+</md-content>
+<md-content layout="row">
+<md-card ng-repeat="item in municipalities | limitTo : 5 : 16" flex="20">
+<a href="#/municipality/{{item.id}}">
+<p>
+{{ item.municipality }}
+</p>
+</a>
+</md-card>
+</md-content>
+</div> -->
+</div>

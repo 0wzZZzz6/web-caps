@@ -1,0 +1,76 @@
+<div ng-controller="municipalityDetailController" layout="column" layout-fill="layout-fill" ng-cloak>
+  <md-content>
+    <md-tabs flex layout="column" md-stretch-tabs="always" md-dynamic-height md-border-bottom>
+      <md-tab flex layout="column" label="Tab1">
+        <p>
+          asdasdasd
+        </p>
+      </md-tab>
+      <md-tab flex layout="column" label="Tab2">
+        <md-card flex="90" flex-offset="5">
+          <!-- main toolbar -->
+          <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
+            <div class="md-toolbar-tools" layout="row">
+              <div layout="row" flex style="padding-top: 15px;">
+                <md-button class="md-icon-button" ng-click="add($event)">
+                  <md-icon class="material-icons">add</md-icon>
+                </md-button>
+
+                <span flex></span>
+
+                <md-input-container flex="20" style="margin: 0px;" md-no-float class="md-block">
+                  <md-select class="md-body-1" ng-model="selectedCategories" ng-change="selectCatergory()" placeholder="Category">
+                    <md-option class="md-body-1" ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
+                  </md-select>
+                </md-input-container>
+
+                <span flex="5"></span>
+
+                <md-input-container style="margin: 0px;" md-no-float class="md-block">
+                  <md-icon class="material-icons">search</md-icon>
+                  <input class="md-body-1" ng-model="search" type="text" placeholder="Search">
+                </md-input-container>
+              </div>
+            </div>
+          </md-toolbar>
+          <!-- option toolbar -->
+          <md-toolbar class="md-table-toolbar md-default" ng-show="selected.length">
+            <div class="md-toolbar-tools">
+              <md-button class="md-icon-button" ng-click="delete($event)">
+                <md-icon class="material-icons">delete</md-icon>
+              </md-button>
+              <md-button class="md-icon-button">
+                <md-icon class="material-icons">edit</md-icon>
+              </md-button>
+              <span flex></span>
+              <md-button class="md-icon-button" ng-click="selected = []">
+                <md-icon class="material-icons">close</md-icon>
+              </md-button>
+            </div>
+          </md-toolbar>
+          <md-table-container>
+            <table md-table md-row-select="options.rowSelection" ng-model="selected">
+              <thead md-head fix-head md-order="query.order">
+                <tr md-row>
+                  <th md-column style="width: 30%"><span>Title</span></th>
+                  <th md-column style="width: 25%"><span>Category</span></th>
+                  <th md-column style="width: 30%"><span>Location</span></th>
+                  <th md-column style="width: 15%">Contact</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr id="item" md-row md-select="item" md-select-id="name" md-auto-select="options.autoSelect" ng-repeat="item in items | filter: selectedCategories | filter: search" ng-click="select(item)">
+                  <td class="md-body-1" md-cell>{{item.title}}</td>
+                  <td class="md-body-1" md-cell>{{item.category.join(', ')}}</td>
+                  <td class="md-body-1" md-cell>{{item.location}}</td>
+                  <td class="md-body-1" md-cell>{{item.contact}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+          <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{desserts.count}}" md-on-paginate="getDesserts" md-page-select></md-table-pagination>
+        </md-card>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>

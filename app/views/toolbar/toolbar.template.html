@@ -1,0 +1,37 @@
+<div ng-controller="toolbarController" layout="column" ng-cloak>
+  <md-toolbar class="md-hue-4">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" ng-click="toggleSideNav()">
+        <md-icon class="material-icons">menu</md-icon>
+      </md-button>
+      <h2 flex md-truncate>SuroyBukidnon</h2>
+    </div>
+  </md-toolbar>
+
+  <md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="left" style="width: 25vw;">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" ng-click="closeSideNav()">
+          <md-icon class="material-icons">arrow_back</md-icon>
+        </md-button>
+        <h1 class="md-toolbar-tools">Title Here...</h1>
+      </div>
+    </md-toolbar>
+    <md-content>
+      <md-list>
+        <md-list-item ng-click="closeSideNav()" ng-href="{{'#/events'}}">
+          <md-icon class="material-icons md-dark md-24">account_circle</md-icon>
+          <p class="md-body-2">Event</p>
+        </md-list-item>
+        <md-list-item ng-click="closeSideNav()" ng-href="{{'#/municipality'}}">
+          <md-icon class="material-icons md-dark md-24">account_circle</md-icon>
+          <p class="md-body-2">Municipality</p>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </md-sidenav>
+
+  <div class="main">
+    <div ng-view></div>
+  </div>
+</div>

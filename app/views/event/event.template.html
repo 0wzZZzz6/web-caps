@@ -1,0 +1,59 @@
+<div ng-controller="eventController" layout="row" ng-cloak layout-wrap>
+  <md-card flex="90" flex-offset="5">
+    <!-- main toolbar -->
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
+      <div class="md-toolbar-tools">
+        <div layout="row" flex style="padding-top: 15px;">
+          <md-button class="md-icon-button" ng-click="add($event)">
+            <md-icon class="material-icons">add</md-icon>
+          </md-button>
+
+          <span flex></span>
+
+          <md-input-container style="margin: 0px;" md-no-float class="md-block">
+            <md-icon class="material-icons">search</md-icon>
+            <input class="md-body-1" ng-model="search" type="text" placeholder="Search">
+          </md-input-container>
+        </div>
+      </div>
+    </md-toolbar>
+    <!-- option toolbar -->
+    <md-toolbar class="md-table-toolbar md-default" ng-show="selected.length">
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" ng-click="delete($event)">
+          <md-icon class="material-icons">delete</md-icon>
+        </md-button>
+        <md-button class="md-icon-button" ng-click="edit($event)">
+          <md-icon class="material-icons">edit</md-icon>
+        </md-button>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="selected = []">
+          <md-icon class="material-icons">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <!-- table for events -->
+    <md-table-container>
+      <table md-table md-row-select="options.rowSelection" ng-model="selected">
+        <thead md-head fix-head md-order="query.order">
+          <tr md-row>
+            <th md-column style="width: 30%;"><span>Event Title</span></th>
+            <th md-column style="width: 20%;"><span>Date</span></th>
+            <th md-column style="width: 30%;">Location</th>
+            <th md-column style="width: 20%;">Description</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row md-select="event" md-select-id="title" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search" ng-click="selectRow(event)">
+            <td md-cell class="oneLineText title">{{event.title}}</td>
+            <td md-cell ng-show="event.allDay">{{event.date | date}}</td>
+            <td md-cell ng-hide="event.allDay">{{event.fromDate | date}} - {{event.toDate | date}}</td>
+            <td md-cell class="oneLineText location">{{event.location}}</td>
+            <td md-cell class="oneLineText description">{{event.description}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+
+  </md-card>
+</div>

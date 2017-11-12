@@ -1,0 +1,66 @@
+<md-dialog style="max-width: 100%; max-height: 100%; width: 100%; height: 100%; border-radius: 0;" aria-label="Full Screen Dialog Test">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button aria-label="Open for menu" class="md-icon-button" ng-click="closeDialog()">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <p class="dialogTitle">{{dialogTitle}}</p>
+      <span flex></span>
+      <md-button ng-click="uploadFile()">Submit</md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content layout-margin >
+    <div layout="row">
+      <md-card layout-padding layout="column" flex="50">
+        <div layout="row">
+          <md-input-container flex="70">
+            <label>Title</label>
+            <input ng-model="title">
+          </md-input-container>
+          <md-input-container flex>
+            <label>Category</label>
+            <md-select ng-model="selectedCategories" multiple="">
+              <md-option ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+
+        <div layout="row">
+          <md-input-container flex>
+            <label>Location</label>
+            <input ng-model="location">
+          </md-input-container>
+        </div>
+
+        <div layout="row">
+          <md-input-container flex>
+            <label>Contact Details</label>
+            <input ng-model="contact">
+          </md-input-container>
+        </div>
+      </md-card>
+
+      <md-card layout-padding layout="column" flex="50">
+
+        <!-- <md-progress-linear md-mode="determinate" value="{{bytesTransferred}}" flex></md-progress-linear> -->
+
+        <div layout="row">
+          <md-button class="md-raised" ngf-select="selectFile($files)" accept="image/*" ngf-multiple="true">Choose file</md-button>
+        </div>
+
+        <div layout="column" flex>
+          <h5>FILES:</h5>
+          <p ng-show="displayMsg">{{msg}}</p>
+          <div layout="row" flex ng-repeat="file in fileList">
+            <div flex="20">
+              <img ngf-thumbnail="file || './thumb.jpg'" style="  width: 100px; height: 100px; float: none; position: relative; top: 7px;">
+            </div>
+            <div flex>
+              <p>{{file.name}}</p>
+            </div>
+          </div>
+        </div>
+      </md-card>
+  </md-dialog-content>
+</md-dialog>
