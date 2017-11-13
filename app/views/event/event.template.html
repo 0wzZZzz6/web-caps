@@ -20,15 +20,24 @@
     <!-- option toolbar -->
     <md-toolbar class="md-table-toolbar md-default" ng-show="selected.length">
       <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" ng-click="selected = []">
+          <md-tooltip md-direction="{{demo.tipDirection}}">
+            Close
+          </md-tooltip>
+          <md-icon class="material-icons">close</md-icon>
+        </md-button>
+        <span flex="5"></span>
         <md-button class="md-icon-button" ng-click="delete($event)">
+          <md-tooltip md-direction="{{demo.tipDirection}}">
+            Delete
+          </md-tooltip>
           <md-icon class="material-icons">delete</md-icon>
         </md-button>
         <md-button class="md-icon-button" ng-click="edit($event)">
+          <md-tooltip md-direction="{{demo.tipDirection}}">
+            Edit
+          </md-tooltip>
           <md-icon class="material-icons">edit</md-icon>
-        </md-button>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="selected = []">
-          <md-icon class="material-icons">close</md-icon>
         </md-button>
       </div>
     </md-toolbar>
@@ -55,6 +64,5 @@
         </tbody>
       </table>
     </md-table-container>
-
   </md-card>
 </div>

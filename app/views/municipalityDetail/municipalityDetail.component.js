@@ -32,6 +32,10 @@ controller("municipalityDetailController", function($scope, $firebaseArray, $rou
     left: false,
     right: true
   }
+  $scope.demo = {
+    showTooltip: false,
+    tipDirection: 'bottom'
+  };
 
   var ref = firebase.database().ref("municipality/" + $scope.municipalityId);
   $scope.items = $firebaseArray(ref);
