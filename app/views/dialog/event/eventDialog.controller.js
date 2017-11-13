@@ -7,22 +7,18 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
   $scope.add = true;
 
   $scope.allDay = false;
+  $scope.readonly = false;
+  $scope.required = true;
   $scope.dialogTitle = "New Event";
   $scope.tag = {};
   $scope.imageURLS = [];
   $scope.imageNames = [];
-  $scope.displayMsg = true;
-  $scope.msg = "No File selected. Please select a file to upload.";
 
   // Model bound to input fields and modal
   $scope.time = {
     from: new Date(),
     to: new Date()
   };
-
-  $scope.readonly = false;
-
-  $scope.required = true;
 
   // $scope.$watch('file', function(newfile, oldfile) {
   //   if(angular.equals(newfile, oldfile) ){
@@ -132,7 +128,6 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
 
   console.clear();
   console.log("edit");
-  console.log(`${EVENT.event_id}`);
 
   var ref = firebase.database().ref();
   $scope.eventDatabase = $firebaseArray(ref.child(`events`));

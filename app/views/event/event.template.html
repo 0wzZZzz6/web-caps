@@ -33,6 +33,7 @@
       </div>
     </md-toolbar>
     <!-- table for events -->
+    <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{events.length}}" md-boundary-links="options.boundaryLinks" md-page-select="options.pageSelect" md-on-paginate="logPagination"></md-table-pagination>
     <md-table-container>
       <table md-table md-row-select="options.rowSelection" ng-model="selected">
         <thead md-head fix-head md-order="query.order">
@@ -44,7 +45,7 @@
           </tr>
         </thead>
         <tbody md-body>
-          <tr md-row md-select="event" md-select-id="title" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search" ng-click="selectRow(event)">
+          <tr md-row md-select="event" md-select-id="title" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(event)">
             <td md-cell class="oneLineText title">{{event.title}}</td>
             <td md-cell ng-show="event.allDay">{{event.date | date}}</td>
             <td md-cell ng-hide="event.allDay">{{event.fromDate | date}} - {{event.toDate | date}}</td>

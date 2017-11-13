@@ -26,6 +26,12 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
   var originatorEv;
   $scope.images = [];
 
+  $scope.query = {
+    order: 'name',
+    limit: 5,
+    page: 1
+  };
+
   var ref = firebase.database().ref();
   $scope.events = $firebaseArray(ref.child('events'));
 
