@@ -21,6 +21,11 @@ controller("municipalityDetailController", function($scope, $firebaseArray, $rou
     limitSelect: false,
     pageSelect: true
   };
+  $scope.query = {
+    order: 'name',
+    limit: 5,
+    page: 1
+  };
   var last = {
     bottom: true,
     top: false,
