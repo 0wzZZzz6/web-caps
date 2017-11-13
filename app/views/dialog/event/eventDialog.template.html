@@ -6,7 +6,8 @@
       </md-button>
       <p class="dialogTitle">{{dialogTitle}}</p>
       <span flex></span>
-      <md-button ng-click="uploadFile()">Submit</md-button>
+      <md-button ng-show="add" ng-click="uploadFile()">Submit</md-button>
+      <md-button ng-show="edit" ng-click="uploadFile()">Save</md-button>
     </div>
   </md-toolbar>
 
@@ -14,10 +15,30 @@
     <div layout="row">
       <md-card layout-padding layout="column" flex="50">
         <div layout="column">
-          <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*">Choose Samples</md-button>
-          <div style="margin-bottom: 25px;">
-            <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
-            style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+          <div ng-show="add" layout="column">
+            <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*">Choose Samples</md-button>
+            <div style="margin-bottom: 25px;">
+              <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+            </div>
+          </div>
+
+          <div ng-show="edit" style="margin-bottom: 25px;">
+            <div layout="column" ng-hide="coverURL">
+              <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*">Choose Samples</md-button>
+              <div style="margin-bottom: 25px;">
+                <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+                style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+              </div>
+            </div>
+
+            <div layout="column" ng-show="coverURL" style="position: relative;">
+              <img ng-src="{{coverURL}}" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+              <md-button class="md-icon-button" ng-click="deleteCover(coverName)" style="position: absolute; top: 0; right: 0; color: red;">
+                <md-icon class="material-icons">delete_forever</md-icon>
+              </md-button>
+            </div>
           </div>
 
           <md-input-container class="md-block input-style" flex>
@@ -87,13 +108,32 @@
       </md-card>
 
       <md-card ng-show="edit" layout-padding layout="column" flex="50">
+        <div layout="column">
+          <md-button class="md-raised" ngf-select="selectSample($files)" accept="image/*" ngf-multiple="true">Add Samples</md-button>
+        </div>
+
         <div ng-cloak="">
-          <md-grid-list  md-cols="4" md-row-height="4:4">
-            <md-grid-tile class="yellow" ng-repeat="imageURL in imageURLS">
-              <img ng-src="{{imageURL}}" style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+          <md-grid-list  md-cols="4" md-row-height="4:4.5">
+            <md-grid-tile ng-repeat="imageURL in imageURLS">
+              <div layout="column" style="position: relative;">
+                <img ng-src="{{imageURL}}" style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+                <md-button class="md-icon-button" ng-click="deleteSample($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                  <md-icon class="material-icons">delete_forever</md-icon>
+                </md-button>
+              </div>
             </md-grid-tile>
           </md-grid-list>
         </div>
+
+        <div ng-cloak="">
+          <md-grid-list  md-cols="4" md-row-height="4:4">
+            <md-grid-tile class="yellow" ng-repeat="file in fileList">
+              <img ngf-thumbnail="file || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+            </md-grid-tile>
+          </md-grid-list>
+        </div>
+
       </md-card>
     </div>
   </md-dialog-content>

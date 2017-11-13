@@ -92,7 +92,7 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
       escapeToClose: false,
       locals: {
         EVENT: {
-          id: THIS.EVENT.$id,
+          event_id: THIS.EVENT.$id,
           title: THIS.EVENT.title,
           location: THIS.EVENT.location,
           description: THIS.EVENT.description,

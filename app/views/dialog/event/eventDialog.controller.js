@@ -57,22 +57,23 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
 
     try {
       for (var i = 0; i < $scope.fileList.length; i++) {
-        var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.fileList[i].name}`);
-        $scope.storage = $firebaseStorage(storageRef);
-        var uploadTaskSample = $scope.storage.$put($scope.fileList[i]);
-
         var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.fileCover.name}`);
         $scope.storage = $firebaseStorage(storageRef);
         var uploadTaskCover = $scope.storage.$put($scope.fileCover);
         uploadTaskCover.$complete(function(snapshot) {
           $scope.coverURL = snapshot.downloadURL;
           $scope.coverName = snapshot.metadata.name;
-        })
+          console.log(`cover upload completed`);
+        });
+
+        var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.fileList[i].name}`);
+        $scope.storage = $firebaseStorage(storageRef);
+        var uploadTaskSample = $scope.storage.$put($scope.fileList[i]);
 
         uploadTaskSample.$complete(function(snapshot) {
           var imageUrl = snapshot.downloadURL;
           var imageName = snapshot.metadata.name;
-          var md5hash = snapshot.metadata.md5Hash;
+          // var md5hash = snapshot.metadata.md5Hash;
 
           $scope.imageURLS.push(imageUrl);
           $scope.imageNames.push(imageName);
@@ -116,51 +117,148 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
         });
       }
     } catch (e) {
-        console.log(e.message);
+      console.log(e.message);
     }
 
   }
 
 }).
 controller("editEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdDialog, $timeout, EVENT) {
-  console.clear();
-  console.log("edit");
-  console.log(`${EVENT.imageNames}`);
-
   $scope.edit = true;
-
-  var fromTime = EVENT.fromTime.split(":");
-  var toTime = EVENT.toTime.split(":");
-  console.log(`${fromTime[0]} : ${fromTime[1]}`);
-  console.log(`${toTime[0]} : ${toTime[1]}`);
-
   $scope.time = {
     from: new Date(),
     to: new Date()
   };
 
-  $scope.title = EVENT.title;
-  $scope.location = EVENT.location;
-  $scope.description = EVENT.description;
-  $scope.allDay = EVENT.allDay;
-  $scope.eventStorageKey = EVENT.eventStorageKey;
-  $scope.coverName = EVENT.coverName;
-  $scope.coverURL = EVENT.coverURL;
-  $scope.imageNames = EVENT.imageNames;
-  $scope.imageURLS = EVENT.imageURLS;
-  $scope.time.from.setHours(fromTime[0]);
-  $scope.time.from.setMinutes(fromTime[1]);
-  $scope.time.to.setHours(toTime[0]);
-  $scope.time.to.setMinutes(toTime[1]);
-  if ($scope.allDay) {
-    $scope.date = new Date(EVENT.date);
-  } else {
-    $scope.fromDate = new Date(EVENT.fromDate);
-    $scope.toDate = new Date(EVENT.toDate);
+  console.clear();
+  console.log("edit");
+  console.log(`${EVENT.event_id}`);
+
+  var ref = firebase.database().ref();
+  $scope.eventDatabase = $firebaseArray(ref.child(`events`));
+
+  $scope.eventDatabase.$loaded().then(function (event) {
+    var eventData = $scope.eventDatabase.$getRecord(EVENT.event_id);
+
+    var fromTime = eventData.fromTime.split(":");
+    var toTime = eventData.toTime.split(":");
+
+    $scope.title = eventData.title;
+    $scope.location = eventData.location;
+    $scope.description = eventData.description;
+    $scope.allDay = eventData.allDay;
+    $scope.eventStorageKey = eventData.eventStorageKey;
+    $scope.coverName = eventData.coverName;
+    $scope.coverURL = eventData.coverURL;
+    $scope.imageNames = eventData.imageNames;
+    $scope.imageURLS = eventData.imageURLS;
+    $scope.time.from.setHours(fromTime[0]);
+    $scope.time.from.setMinutes(fromTime[1]);
+    $scope.time.to.setHours(toTime[0]);
+    $scope.time.to.setMinutes(toTime[1]);
+    if ($scope.allDay) {
+      $scope.date = new Date(eventData.date);
+    } else {
+      $scope.fromDate = new Date(eventData.fromDate);
+      $scope.toDate = new Date(eventData.toDate);
+    }
+  });
+
+  $scope.selectCover = function(file) {
+    $scope.fileCover = file;
+    console.log(`${$scope.fileCover}`);
+    var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.fileCover.name}`);
+    $scope.storage = $firebaseStorage(storageRef);
+    var uploadTaskCover = $scope.storage.$put($scope.fileCover);
+    uploadTaskCover.$complete(function(snapshot) {
+      $scope.coverURL = snapshot.downloadURL;
+      $scope.coverName = snapshot.metadata.name;
+      console.log(`cover upload completed`);
+      $scope.save();
+    });
   }
 
+  $scope.selectSample = function(file) {
+    $scope.fileList = file;
+    for (var i = 0; i < $scope.fileList.length; i++) {
+      var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.fileList[i].name}`);
+      $scope.storage = $firebaseStorage(storageRef);
+      var uploadTaskSample = $scope.storage.$put($scope.fileList[i]);
+      uploadTaskSample.$complete(function(snapshot) {
+        var imageUrl = snapshot.downloadURL;
+        var imageName = snapshot.metadata.name;
+
+        $scope.imageURLS.push(imageUrl);
+        $scope.imageNames.push(imageName);
+
+        $scope.save();
+
+      });
+    }
+    $scope.fileList = null;
+  }
+
+  $scope.save = function() {
+    console.log(`uploading...`);
+    var record = $scope.eventDatabase.$getRecord(EVENT.event_id);
+    record.title = $scope.title;
+    record.location = $scope.location;
+    record.description = $scope.description;
+    record.allDay = $scope.allDay;
+    record.eventStorageKey = $scope.eventStorageKey;
+    record.coverName = $scope.coverName;
+    record.coverURL = $scope.coverURL;
+    record.imageNames = $scope.imageNames;
+    record.imageURLS = $scope.imageURLS;
+    record.fromTime = $scope.time.from.getHours() + ":" + $scope.time.from.getMinutes();
+    record.toTime = $scope.time.to.getHours() + ":" + $scope.time.to.getMinutes();
+    if ($scope.allDay) {
+      record.fromDate = null;
+      record.toDate = null;
+      record.date = $scope.date.getTime();
+    } else {
+      record.fromDate = $scope.fromDate.getTime();
+      record.toDate = $scope.toDate.getTime();
+      record.date = null;
+    }
+
+    $scope.eventDatabase.$save(record);
+
+  }
+
+  $scope.uploadFile = function() {
+    $scope.save();
+    $mdDialog.hide();
+  }
+
+  $scope.deleteCover = function(imgName) {
+    console.log(`${imgName}`);
+    var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${imgName}`);
+    $scope.storage = $firebaseStorage(storageRef);
+    $scope.storage.$delete().then(function() {
+      console.log("successfully deleted cover!");
+    });
+    $scope.coverURL = null;
+    $scope.coverName = null;
+    $scope.save();
+  }
+
+  $scope.deleteSample = function(index) {
+    console.log(`${$scope.imageNames[index]}`);
+
+    var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.imageNames[index]}`);
+    $scope.storage = $firebaseStorage(storageRef);
+    $scope.storage.$delete().then(function() {
+      console.log("successfully deleted sample!");
+    });
+
+    $scope.imageURLS.splice(index, 1);
+    $scope.imageNames.splice(index, 1);
+    $scope.save();
+  }
 
   $scope.closeDialog = function() {
     $mdDialog.hide();
   };
+
 });
