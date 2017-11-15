@@ -24,7 +24,6 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
     right: true
   }
   var originatorEv;
-  $scope.images = [];
 
   $scope.query = {
     order: 'name',
@@ -66,10 +65,6 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
 
   $scope.selectRow = function(param) {
     THIS.EVENT = param;
-    $scope.showOption = true;
-    $scope.images = THIS.EVENT.imageNames;
-    $scope.images = $scope.images.concat(THIS.EVENT.coverName);
-    console.log($scope.images);
     console.log(THIS.EVENT.eventStorageKey);
   };
 
@@ -133,11 +128,17 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
       $scope.selected = [];
       $scope.showOption = true;
 
-      for(var i=0; i < $scope.images.length; i++) {
-        var storageRef = firebase.storage().ref(`/Photos/events/${THIS.EVENT.eventStorageKey}/${$scope.images[i]}`);
-        $scope.storage = $firebaseStorage(storageRef);
-        $scope.storage.$delete().then(function() {
-          console.log("successfully deleted! ");
+      var storageCoverRef = firebase.storage().ref(`/Photos/events/${THIS.EVENT.eventStorageKey}/cover/${THIS.EVENT.coverName}`);
+      $scope.storageCover = $firebaseStorage(storageCoverRef);
+      $scope.storageCover.$delete().then(function() {
+        console.log(`successfully deleted! cover`);
+      });
+
+      for(var i=0; i < THIS.EVENT.imageNames.length; i++) {
+        var storageSampleRef = firebase.storage().ref(`/Photos/events/${THIS.EVENT.eventStorageKey}/${THIS.EVENT.imageNames[i]}`);
+        $scope.storageSample = $firebaseStorage(storageSampleRef);
+        $scope.storageSample.$delete().then(function() {
+          console.log(`successfully deleted! sample`);
         });
       }
 

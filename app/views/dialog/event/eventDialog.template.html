@@ -41,55 +41,57 @@
             </div>
           </div>
 
-          <md-input-container class="md-block input-style" flex>
-            <label>Event Title</label>
-            <input ng-model="title">
-          </md-input-container>
-
-          <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
-            <label>Event Location</label>
-            <input ng-model="location">
-          </md-input-container>
-
-          <md-checkbox ng-model="allDay" aria-label="Checkbox All-day">
-            All-day
-          </md-checkbox>
-
-          <div layout="column" ng-hide="allDay">
-            <label>Date</label>
-            <div layout="row">
-              <md-datepicker ng-model="fromDate" md-placeholder="From"></md-datepicker>
-              <span flex="20"></span>
-              <md-datepicker ng-model="toDate" md-placeholder="To"></md-datepicker>
-            </div>
-
-            <label>Time</label>
-            <div layout="row">
-              <md-time-picker ng-model="time.from" message="message"></md-time-picker>
-              <span flex="10"></span>
-              <md-time-picker ng-model="time.to" message="message"></md-time-picker>
-            </div>
-          </div>
-
-          <div layout="column" ng-show="allDay">
-            <label>Date</label>
-            <div layout="row">
-              <md-datepicker ng-model="date" md-placeholder="Enter Date"></md-datepicker>
-            </div>
-            <label>Time</label>
-            <div layout="row">
-              <md-time-picker ng-model="time.from" message="message"></md-time-picker>
-              <span flex="10"></span>
-              <md-time-picker ng-model="time.to" message="message"></md-time-picker>
-            </div>
-          </div>
-
-          <div style="margin-top: 25px;">
-            <md-input-container class="md-block input-style" flex >
-              <label>Event Description</label>
-              <textarea ng-model="description" md-maxlength="150" rows="4" md-select-on-focus></textarea>
+          <form name="eventForm">
+            <md-input-container class="md-block input-style" flex>
+              <label>Event Title</label>
+              <input ng-model="title" required>
             </md-input-container>
-          </div>
+
+            <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
+              <label>Event Location</label>
+              <input ng-model="location" required>
+            </md-input-container>
+
+            <md-checkbox ng-model="allDay" aria-label="Checkbox All-day">
+              All-day
+            </md-checkbox>
+
+            <div layout="column" ng-hide="allDay">
+              <label>Date</label>
+              <div layout="row">
+                <md-datepicker ng-model="fromDate" md-placeholder="From" ng-required="!allDay"></md-datepicker>
+                <span flex="20"></span>
+                <md-datepicker ng-model="toDate" md-placeholder="To" ng-required="!allDay"></md-datepicker>
+              </div>
+
+              <label>Time</label>
+              <div layout="row">
+                <md-time-picker ng-model="time.from" message="message" ng-required="!allDay"></md-time-picker>
+                <span flex="10"></span>
+                <md-time-picker ng-model="time.to" message="message" ng-required="!allDay"></md-time-picker>
+              </div>
+            </div>
+
+            <div layout="column" ng-show="allDay">
+              <label>Date</label>
+              <div layout="row">
+                <md-datepicker ng-model="date" md-placeholder="Enter Date" ng-required="allDay"></md-datepicker>
+              </div>
+              <label>Time</label>
+              <div layout="row">
+                <md-time-picker ng-model="time.from" message="message" required></md-time-picker>
+                <span flex="10"></span>
+                <md-time-picker ng-model="time.to" message="message" required></md-time-picker>
+              </div>
+            </div>
+
+            <div style="margin-top: 25px;">
+              <md-input-container class="md-block input-style" flex >
+                <label>Event Description</label>
+                <textarea ng-model="description" md-maxlength="150" rows="4" md-select-on-focus  required></textarea>
+              </md-input-container>
+            </div>
+          </form>
         </div>
       </md-card>
 
@@ -99,7 +101,7 @@
         </div>
         <div ng-cloak="">
           <md-grid-list  md-cols="4" md-row-height="4:4">
-            <md-grid-tile class="yellow" ng-repeat="file in fileList">
+            <md-grid-tile class="yellow" ng-repeat="file in fileSample">
               <img ngf-thumbnail="file || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
               style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
             </md-grid-tile>
@@ -127,7 +129,7 @@
 
         <div ng-cloak="">
           <md-grid-list  md-cols="4" md-row-height="4:4">
-            <md-grid-tile class="yellow" ng-repeat="file in fileList">
+            <md-grid-tile class="yellow" ng-repeat="file in fileSample">
               <img ngf-thumbnail="file || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
               style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
             </md-grid-tile>

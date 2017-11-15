@@ -5,6 +5,9 @@
       <div class="md-toolbar-tools">
         <div layout="row" flex style="padding-top: 15px;">
           <md-button class="md-icon-button" ng-click="add($event)">
+            <md-tooltip md-direction="{{demo.tipDirection}}">
+              Add
+            </md-tooltip>
             <md-icon class="material-icons">add</md-icon>
           </md-button>
 
@@ -54,7 +57,7 @@
           </tr>
         </thead>
         <tbody md-body>
-          <tr md-row md-select="event" md-select-id="title" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(event)">
+          <tr md-row md-select="event" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(event)">
             <td md-cell class="oneLineText title">{{event.title}}</td>
             <td md-cell ng-show="event.allDay">{{event.date | date}}</td>
             <td md-cell ng-hide="event.allDay">{{event.fromDate | date}} - {{event.toDate | date}}</td>
