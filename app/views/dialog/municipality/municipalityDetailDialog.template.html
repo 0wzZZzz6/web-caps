@@ -80,5 +80,33 @@
           </md-grid-list>
         </div>
       </md-card>
+
+      <md-card ng-show="edit" layout-padding layout="column" flex="50">
+        <div layout="column">
+          <md-button class="md-raised" ngf-select="selectSample($files)" accept="image/*" ngf-multiple="true">Add Samples</md-button>
+        </div>
+
+        <div ng-cloak="">
+          <md-grid-list  md-cols="4" md-row-height="4:4.5">
+            <md-grid-tile ng-repeat="imageURL in imageURLS">
+              <div layout="column" style="position: relative;">
+                <img ng-src="{{imageURL}}" style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+                <md-button class="md-icon-button" ng-click="deleteSample($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                  <md-icon class="material-icons">delete_forever</md-icon>
+                </md-button>
+              </div>
+            </md-grid-tile>
+          </md-grid-list>
+        </div>
+
+        <div ng-cloak="">
+          <md-grid-list  md-cols="4" md-row-height="4:4">
+            <md-grid-tile class="yellow" ng-repeat="file in fileSample">
+              <img ngf-thumbnail="file || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+            </md-grid-tile>
+          </md-grid-list>
+        </div>
+      </md-card>
   </md-dialog-content>
 </md-dialog>

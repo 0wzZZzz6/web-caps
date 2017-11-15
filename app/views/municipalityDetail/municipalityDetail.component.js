@@ -84,7 +84,7 @@ controller("municipalityDetailController", function($scope, $firebaseArray, $fir
 
   $scope.add = function(ev) {
     $mdDialog.show({
-      controller: "municipalityDetailDialogController",
+      controller: "addMunicipalityDetailDialogController",
       templateUrl: "views/dialog/municipality/municipalityDetailDialog.template.html",
       parent: angular.element(document.body),
       targetEvent: ev,
@@ -96,6 +96,20 @@ controller("municipalityDetailController", function($scope, $firebaseArray, $fir
       }
     });
   };
+
+  $scope.edit = function(ev) {
+    $mdDialog.show({
+      controller: "editMunicipalityDetailDialogController",
+      templateUrl:  "views/dialog/municipality/municipalityDetailDialog.template.html",
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      escapeToClose: false,
+      locals: {
+        municipality: $scope.municipalityId,
+        municipality_item: THIS.MUNICIPALITY_ITEM
+      }
+    });
+  }
 
   $scope.delete = function(ev) {
     // Appending dialog to document.body to cover sidenav in docs app

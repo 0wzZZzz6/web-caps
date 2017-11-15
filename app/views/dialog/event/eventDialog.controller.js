@@ -140,9 +140,9 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
     from: new Date(),
     to: new Date()
   };
-  $scope.fromDate = new Date();
-  $scope.toDate = new Date();
-  $scope.date = new Date();
+  // $scope.fromDate = new Date();
+  // $scope.toDate = new Date();
+  // $scope.date = new Date();
   $scope.imageURLS = [];
   $scope.imageNames = [];
 
@@ -181,7 +181,6 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
 
   $scope.selectCover = function(file) {
     $scope.fileCover = file;
-    console.log(`${$scope.fileCover}`);
     var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/cover/${$scope.fileCover.name}`);
     $scope.storage = $firebaseStorage(storageRef);
     var uploadTaskCover = $scope.storage.$put($scope.fileCover);
@@ -194,29 +193,45 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
   }
 
   $scope.selectSample = function(file) {
-    if (!$scope.imageURLS && !$scope.imageNames) {
-      $scope.imageURLS = [];
-      $scope.imageNames = [];
-      $scope.fileSample = file;
-      for (var i = 0; i < $scope.fileSample.length; i++) {
-        var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.fileSample[i].name}`);
-        $scope.storage = $firebaseStorage(storageRef);
-        var uploadTaskSample = $scope.storage.$put($scope.fileSample[i]);
-
-        uploadTaskSample.$complete(function(snapshot) {
-          var imageUrl = snapshot.downloadURL;
-          var imageName = snapshot.metadata.name;
-
-          $scope.imageURLS.push(imageUrl);
-          $scope.imageNames.push(imageName);
-
-          console.log(`[COMPLETE] sample`);
-
-          $scope.save();
-        });
-      }
-      $scope.fileSample = null;
+    $scope.fileSample = file;
+    for (var i = 0; i < $scope.fileSample.length; i++) {
+      var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.fileSample[i].name}`);
+      $scope.storage = $firebaseStorage(storageRef);
+      var uploadTaskSample = $scope.storage.$put($scope.fileSample[i]);
+      uploadTaskSample.$complete(function(snapshot) {
+        var imageUrl = snapshot.downloadURL;
+        var imageName = snapshot.metadata.name;
+        $scope.imageURLS.push(imageUrl);
+        $scope.imageNames.push(imageName);
+        console.log(`[COMPLETE] sample`);
+        $scope.save();
+      });
     }
+    $scope.fileSample = null;
+  }
+
+  $scope.deleteCover = function(imgName) {
+    console.log(`${imgName}`);
+    var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/cover/${imgName}`);
+    $scope.storage = $firebaseStorage(storageRef);
+    $scope.storage.$delete().then(function() {
+      console.log("successfully deleted cover!");
+    });
+    $scope.coverURL = null;
+    $scope.coverName = null;
+    $scope.save();
+  }
+
+  $scope.deleteSample = function(index) {
+    console.log(`${$scope.imageNames[index]}`);
+    var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.imageNames[index]}`);
+    $scope.storage = $firebaseStorage(storageRef);
+    $scope.storage.$delete().then(function() {
+      console.log("successfully deleted sample!");
+    });
+    $scope.imageURLS.splice(index, 1);
+    $scope.imageNames.splice(index, 1);
+    $scope.save();
   }
 
   $scope.save = function() {
@@ -248,46 +263,12 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
 
   $scope.uploadFile = function() {
     console.clear();
-    if ($scope.coverURL && $scope.imageURLS && $scope.eventForm.$valid) {
-      $scope.save();
-      $mdDialog.hide();
-    } else {
-      console.log(`[ERROR] provide cover and sample picture. fill up input fields`);
-    }
-  }
-
-  $scope.deleteCover = function(imgName) {
-    console.log(`${imgName}`);
-    var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/cover/${imgName}`);
-    $scope.storage = $firebaseStorage(storageRef);
-    $scope.storage.$delete().then(function() {
-      console.log("successfully deleted cover!");
-    });
-    $scope.coverURL = null;
-    $scope.coverName = null;
     $scope.save();
-  }
-
-  $scope.deleteSample = function(index) {
-    console.log(`${$scope.imageNames[index]}`);
-
-    var storageRef = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/${$scope.imageNames[index]}`);
-    $scope.storage = $firebaseStorage(storageRef);
-    $scope.storage.$delete().then(function() {
-      console.log("successfully deleted sample!");
-    });
-
-    $scope.imageURLS.splice(index, 1);
-    $scope.imageNames.splice(index, 1);
-    $scope.save();
+    $mdDialog.hide();
   }
 
   $scope.closeDialog = function() {
-    if ($scope.eventForm.$validate && $scope.imageURLS && $scope.imageNames) {
-      $mdDialog.hide();
-    } else {
-      console.log(`fill up missing links`);
-    }
+    $mdDialog.hide();
   };
 
 });
