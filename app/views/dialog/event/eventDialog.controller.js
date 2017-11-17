@@ -12,6 +12,7 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
   $scope.tag = {};
   $scope.imageURLS = [];
   $scope.imageNames = [];
+  $scope.starred = false;
   // $scope.fromDate = new Date();
   // $scope.toDate = new Date();
   // $scope.date = new Date();
@@ -110,7 +111,8 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
                   imageNames: $scope.imageNames,
                   coverURL: $scope.coverURL,
                   coverName: $scope.coverName,
-                  eventStorageKey: $scope.eventStorageKey
+                  eventStorageKey: $scope.eventStorageKey,
+                  starred: $scope.starred
                 }).then(function(events) {
                   var id = events.key;
                   console.log(`[ADDED] record with id: ${id}`);
@@ -133,6 +135,14 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
   $scope.closeDialog = function() {
     $mdDialog.hide();
   };
+
+  $scope.star = function() {
+    if ($scope.starred) {
+      $scope.starred = false;
+    } else {
+      $scope.starred = true;
+    }
+  };
 }).
 controller("editEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdDialog, $timeout, EVENT) {
   $scope.edit = true;
@@ -145,6 +155,7 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
   // $scope.date = new Date();
   $scope.imageURLS = [];
   $scope.imageNames = [];
+  $scope.starred = false;
 
   console.clear();
   console.log("edit");
@@ -171,6 +182,7 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
     $scope.time.from.setMinutes(fromTime[1]);
     $scope.time.to.setHours(toTime[0]);
     $scope.time.to.setMinutes(toTime[1]);
+    $scope.starred = eventData.starred;
     if ($scope.allDay) {
       $scope.date = new Date(eventData.date);
     } else {
@@ -248,6 +260,7 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
     record.imageURLS = $scope.imageURLS;
     record.fromTime = $scope.time.from.getHours() + ":" + $scope.time.from.getMinutes();
     record.toTime = $scope.time.to.getHours() + ":" + $scope.time.to.getMinutes();
+    record.starred = $scope.starred;
     if ($scope.allDay) {
       record.fromDate = null;
       record.toDate = null;
@@ -269,6 +282,14 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
 
   $scope.closeDialog = function() {
     $mdDialog.hide();
+  };
+
+  $scope.star = function() {
+    if ($scope.starred) {
+      $scope.starred = false;
+    } else {
+      $scope.starred = true;
+    }
   };
 
 });

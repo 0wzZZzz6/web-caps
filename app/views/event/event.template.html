@@ -50,7 +50,8 @@
       <table md-table md-row-select="options.rowSelection" ng-model="selected">
         <thead md-head fix-head md-order="query.order">
           <tr md-row>
-            <th md-column style="width: 30%;"><span>Event Title</span></th>
+            <th md-column style="width: 2%"></th>
+            <th md-column style="width: 28%;"><span>Event Title</span></th>
             <th md-column style="width: 20%;"><span>Date</span></th>
             <th md-column style="width: 30%;">Location</th>
             <th md-column style="width: 20%;">Description</th>
@@ -58,6 +59,10 @@
         </thead>
         <tbody md-body>
           <tr md-row md-select="event" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(event)">
+            <td md-cell ng-click="star()">
+              <md-icon ng-show="event.starred" class="material-icons" style="color: yellow;">star</md-icon>
+              <md-icon ng-hide="event.starred" class="material-icons">star_border</md-icon>
+            </td>
             <td md-cell class="oneLineText title">{{event.title}}</td>
             <td md-cell ng-show="event.allDay">{{event.date | date}}</td>
             <td md-cell ng-hide="event.allDay">{{event.fromDate | date}} - {{event.toDate | date}}</td>

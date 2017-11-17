@@ -17,6 +17,7 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
     limitSelect: false,
     pageSelect: true
   };
+  $scope.starred = false;
   var last = {
     bottom: true,
     top: false,
@@ -147,4 +148,5 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
       $mdDialog.hide();
     });
   };
+
 });

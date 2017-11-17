@@ -42,10 +42,17 @@
           </div>
 
           <form name="eventForm">
-            <md-input-container class="md-block input-style" flex>
-              <label>Event Title</label>
-              <input ng-model="title" required>
-            </md-input-container>
+            <div layout="row">
+              <md-input-container class="md-block input-style" flex>
+                <label>Event Title</label>
+                <input ng-model="title" required>
+              </md-input-container>
+              <span flex="5"></span>
+              <md-button class="md-icon-button" ng-click="star()">
+                <md-icon ng-show="starred" class="material-icons" style="color: yellow;">star</md-icon>
+                <md-icon ng-hide="starred" class="material-icons">star_border</md-icon>
+              </md-button>
+            </div>
 
             <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
               <label>Event Location</label>
