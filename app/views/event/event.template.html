@@ -59,7 +59,7 @@
         </thead>
         <tbody md-body>
           <tr md-row md-select="event" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(event)">
-            <td md-cell ng-click="star()">
+            <td md-cell>
               <md-icon ng-show="event.starred" class="material-icons" style="color: yellow;">star</md-icon>
               <md-icon ng-hide="event.starred" class="material-icons">star_border</md-icon>
             </td>

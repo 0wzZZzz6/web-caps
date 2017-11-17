@@ -62,7 +62,8 @@
             <table md-table md-row-select="options.rowSelection" ng-model="selected">
               <thead md-head fix-head md-order="query.order">
                 <tr md-row>
-                  <th md-column style="width: 30%"><span>Title</span></th>
+                  <th style="width: 2%"></th>
+                  <th md-column style="width: 28%"><span>Title</span></th>
                   <th md-column style="width: 25%"><span>Category</span></th>
                   <th md-column style="width: 30%"><span>Location</span></th>
                   <th md-column style="width: 15%">Contact</th>
@@ -70,6 +71,10 @@
               </thead>
               <tbody md-body>
                 <tr id="item" md-row md-select="item" md-select-id="name" md-auto-select="options.autoSelect" ng-repeat="item in municipality_items | filter: selectedCategories | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(item)">
+                  <td md-cell>
+                    <md-icon ng-show="item.starred" class="material-icons" style="color: yellow;">star</md-icon>
+                    <md-icon ng-hide="item.starred" class="material-icons">star_border</md-icon>
+                  </td>
                   <td class="md-body-1" md-cell>{{item.title}}</td>
                   <td class="md-body-1" md-cell>{{item.category.join(', ')}}</td>
                   <td class="md-body-1" md-cell>{{item.location}}</td>

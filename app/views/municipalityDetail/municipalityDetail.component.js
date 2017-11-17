@@ -9,6 +9,7 @@ controller("municipalityDetailController", function($scope, $firebaseArray, $fir
   console.log("municipality detail - " + $scope.municipalityId);
   $scope.categories = ['Show All', 'Landmark', 'Accommodation', 'Food', 'Recreation'];
   var THIS = this;
+  $scope.starred = false;
   $scope.selected = [];
   $scope.options = {
     rowSelection: true,

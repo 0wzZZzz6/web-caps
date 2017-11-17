@@ -78,7 +78,8 @@ controller("addMunicipalityDetailDialogController", function($scope, $firebaseSt
                 imageURLS: $scope.imageURLS,
                 imageNames: $scope.imageNames,
                 coverURL: $scope.coverURL,
-                coverName: $scope.coverName
+                coverName: $scope.coverName,
+                starred: $scope.starred
               }).then(function(municipalities) {
                 var id = municipalities.key;
                 console.log(`added record with id: ${id}`);
@@ -96,6 +97,14 @@ controller("addMunicipalityDetailDialogController", function($scope, $firebaseSt
 
   $scope.closeDialog = function() {
     $mdDialog.hide();
+  };
+
+  $scope.star = function() {
+    if ($scope.starred) {
+      $scope.starred = false;
+    } else {
+      $scope.starred = true;
+    }
   };
 
 }).
@@ -125,6 +134,7 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
     $scope.coverURL = itemData.coverURL;
     $scope.imageNames = itemData.imageNames;
     $scope.imageURLS = itemData.imageURLS;
+    $scope.starred = itemData.starred;
   });
 
   $scope.selectCover = function(file) {
@@ -194,7 +204,7 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
     record.coverURL = $scope.coverURL;
     record.imageNames = $scope.imageNames;
     record.imageURLS = $scope.imageURLS;
-
+    record.starred = $scope.starred;
 
     $scope.municipalityDatabase.$save(record);
   }
@@ -207,5 +217,13 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
 
   $scope.closeDialog = function() {
     $mdDialog.hide();
+  };
+
+  $scope.star = function() {
+    if ($scope.starred) {
+      $scope.starred = false;
+    } else {
+      $scope.starred = true;
+    }
   };
 });

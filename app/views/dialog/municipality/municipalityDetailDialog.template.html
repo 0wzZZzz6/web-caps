@@ -40,7 +40,7 @@
         </div>
 
         <div layout="row">
-          <md-input-container flex="70">
+          <md-input-container flex="55">
             <label>Title</label>
             <input ng-model="title">
           </md-input-container>
@@ -50,6 +50,10 @@
               <md-option ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
             </md-select>
           </md-input-container>
+          <md-button class="md-icon-button" ng-click="star()" style="margin-top: 15px;">
+            <md-icon ng-show="starred" class="material-icons" style="color: yellow;">star</md-icon>
+            <md-icon ng-hide="starred" class="material-icons">star_border</md-icon>
+          </md-button>
         </div>
 
         <div layout="row">
