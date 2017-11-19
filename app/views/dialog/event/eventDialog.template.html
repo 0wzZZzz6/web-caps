@@ -16,7 +16,7 @@
       <md-card layout-padding layout="column" flex="50">
         <div layout="column">
           <div ng-show="add" layout="column">
-            <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*">Choose Samples</md-button>
+            <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*" required>Choose Samples</md-button>
             <div style="margin-bottom: 25px;">
               <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
               style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
@@ -25,7 +25,7 @@
 
           <div ng-show="edit" style="margin-bottom: 25px;">
             <div layout="column" ng-hide="coverURL">
-              <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*">Choose Samples</md-button>
+              <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*" required>Choose Samples</md-button>
               <div style="margin-bottom: 25px;">
                 <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
                 style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
