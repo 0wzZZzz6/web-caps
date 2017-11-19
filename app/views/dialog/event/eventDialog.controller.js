@@ -1,6 +1,6 @@
 angular.
 module("capstone-web").
-controller("addEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdDialog, $timeout) {
+controller("addEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdToast, $mdDialog, $timeout) {
   var events = firebase.database().ref();
   $scope.events = $firebaseArray(events.child('events'));
 
@@ -102,6 +102,7 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
                 }).then(function(events) {
                   var id = events.key;
                   console.log(`[ADDED] record with id: ${id}`);
+                  $scope.toast(`Event successfully added.`);
                 });
                 completed = false;
               }
@@ -123,6 +124,43 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
     $mdDialog.hide();
   };
 
+  $scope.toast = function(text) {
+    var last = {
+        bottom: true,
+        top: false,
+        left: false,
+        right: true
+      };
+
+    $scope.toastPosition = angular.extend({}, last);
+
+    $scope.getToastPosition = function() {
+      sanitizePosition();
+      return Object.keys($scope.toastPosition)
+      .filter(function(pos) {
+        return $scope.toastPosition[pos];
+      })
+      .join(" ");
+    };
+
+    function sanitizePosition() {
+      var current = $scope.toastPosition;
+      if ( current.bottom && last.top ) current.top = false;
+      if ( current.top && last.bottom ) current.bottom = false;
+      if ( current.right && last.left ) current.left = false;
+      if ( current.left && last.right ) current.right = false;
+      last = angular.extend({},current);
+    }
+
+    var pinTo = $scope.getToastPosition();
+    $mdToast.show(
+      $mdToast.simple()
+      .textContent(text)
+      .position(pinTo)
+      .hideDelay(3000)
+    );
+  }
+
   $scope.star = function() {
     if ($scope.starred) {
       $scope.starred = false;
@@ -131,7 +169,7 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
     }
   };
 }).
-controller("editEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdDialog, $timeout, EVENT) {
+controller("editEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdToast, $mdDialog, $timeout, EVENT) {
   $scope.edit = true;
   $scope.time = {
     from: new Date(),
@@ -297,26 +335,6 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
       }
 
       if ($scope.eventForm.$valid && $scope.coverURL && $scope.imageURLS ) {
-        $scope.current.title = $scope.title;
-        $scope.current.location = $scope.location;
-        $scope.current.description = $scope.description;
-        $scope.current.allDay = $scope.allDay;
-        $scope.current.eventStorageKey = $scope.eventStorageKey;
-        $scope.current.coverName = $scope.coverName;
-        $scope.current.coverURL = $scope.coverURL;
-        $scope.current.imageNames = $scope.imageNames;
-        $scope.current.imageURLS = $scope.imageURLS;
-        $scope.current.fromTime = $scope.time.from.getHours() + ":" + $scope.time.from.getMinutes();
-        $scope.current.toTime = $scope.time.to.getHours() + ":" + $scope.time.to.getMinutes();
-        $scope.current.starred = $scope.starred;
-        if ($scope.allDay) {
-          $scope.current.date = $scope.date.getTime();
-        } else {
-          $scope.current.fromDate = $scope.fromDate.getTime();
-          $scope.current.toDate = $scope.toDate.getTime();
-        }
-        console.log($scope.isEquivalent($scope.current, $scope.old));
-
         console.log("[UPLOADING] data");
         var record = $scope.eventDatabase.$getRecord(EVENT.event_id);
         record.title = $scope.title;
@@ -361,6 +379,7 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
           }
 
           console.log(`successfully updated`);
+          $scope.toast(`Event successfully updated.`);
           $mdDialog.hide();
         });
 
@@ -373,8 +392,68 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
   }
 
   $scope.closeDialog = function() {
-    $mdDialog.hide();
+    $scope.current.title = $scope.title;
+    $scope.current.location = $scope.location;
+    $scope.current.description = $scope.description;
+    $scope.current.allDay = $scope.allDay;
+    $scope.current.eventStorageKey = $scope.eventStorageKey;
+    $scope.current.coverName = $scope.coverName;
+    $scope.current.coverURL = $scope.coverURL;
+    $scope.current.imageNames = $scope.imageNames;
+    $scope.current.imageURLS = $scope.imageURLS;
+    $scope.current.fromTime = $scope.time.from.getHours() + ":" + $scope.time.from.getMinutes();
+    $scope.current.toTime = $scope.time.to.getHours() + ":" + $scope.time.to.getMinutes();
+    $scope.current.starred = $scope.starred;
+    if ($scope.allDay) {
+      $scope.current.date = $scope.date.getTime();
+    } else {
+      $scope.current.fromDate = $scope.fromDate.getTime();
+      $scope.current.toDate = $scope.toDate.getTime();
+    }
+    if ($scope.isEquivalent($scope.current, $scope.old)) {
+      $mdDialog.hide();
+    } else {
+      console.log(`data has changes. please review and save`);
+    }
+
   };
+
+  $scope.toast = function(text) {
+    var last = {
+        bottom: true,
+        top: false,
+        left: false,
+        right: true
+      };
+
+    $scope.toastPosition = angular.extend({}, last);
+
+    $scope.getToastPosition = function() {
+      sanitizePosition();
+      return Object.keys($scope.toastPosition)
+      .filter(function(pos) {
+        return $scope.toastPosition[pos];
+      })
+      .join(" ");
+    };
+
+    function sanitizePosition() {
+      var current = $scope.toastPosition;
+      if ( current.bottom && last.top ) current.top = false;
+      if ( current.top && last.bottom ) current.bottom = false;
+      if ( current.right && last.left ) current.left = false;
+      if ( current.left && last.right ) current.right = false;
+      last = angular.extend({},current);
+    }
+
+    var pinTo = $scope.getToastPosition();
+    $mdToast.show(
+      $mdToast.simple()
+      .textContent(text)
+      .position(pinTo)
+      .hideDelay(3000)
+    );
+  }
 
   $scope.star = function() {
     if ($scope.starred) {
