@@ -18,14 +18,6 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
     pageSelect: true
   };
   $scope.starred = false;
-  var last = {
-    bottom: true,
-    top: false,
-    left: false,
-    right: true
-  }
-  var originatorEv;
-
   $scope.query = {
     order: 'name',
     limit: 5,
@@ -35,8 +27,16 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
   var ref = firebase.database().ref();
   $scope.events = $firebaseArray(ref.child('events'));
 
-  $scope.toast = function(param) {
+  $scope.toast = function(text) {
+    var last = {
+        bottom: true,
+        top: false,
+        left: false,
+        right: true
+      };
+
     $scope.toastPosition = angular.extend({}, last);
+
     $scope.getToastPosition = function() {
       sanitizePosition();
       return Object.keys($scope.toastPosition)
@@ -58,7 +58,7 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
     var pinTo = $scope.getToastPosition();
     $mdToast.show(
       $mdToast.simple()
-      .textContent(param)
+      .textContent(text)
       .position(pinTo)
       .hideDelay(3000)
     );
@@ -68,12 +68,6 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
     THIS.EVENT = param;
     console.log(THIS.EVENT.eventStorageKey);
   };
-
-  $scope.openMenu = function($mdMenu, ev, event) {
-    console.log(`${event.title} -- menu`);
-    originatorEv = ev;
-    $mdMenu.open(ev);
-  }
 
   $scope.add = function(ev) {
     $mdDialog.show({
@@ -143,7 +137,7 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
         });
       }
 
-      $scope.toast(`${THIS.EVENT.title} event successfully deleted.`);
+      $scope.toast(`Event: ${THIS.EVENT.title} successfully deleted.`);
     }, function() {
       $mdDialog.hide();
     });
