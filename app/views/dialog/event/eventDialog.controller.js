@@ -269,11 +269,6 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
       uploadTaskSample.$complete(function(snapshot) {
         var imageUrl = snapshot.downloadURL;
         var imageName = snapshot.metadata.name;
-        if (!$scope.imageURLS && !$scope.imageNames) {
-          console.log(`zero samples`);
-          $scope.imageURLS = [];
-          $scope.imageNames = [];
-        }
         $scope.imageURLS.push(imageUrl);
         $scope.imageNames.push(imageName);
         console.log(`[COMPLETE] sample`);
@@ -359,7 +354,7 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
           record.date = null;
         }
 
-        $scope.eventDatabase.$save(record).then(function() {
+        $scope.eventDatabase.$save(record).then(function () {
           if ($scope.delCoverName) {
             var storageRefCover = firebase.storage().ref(`/Photos/events/${$scope.eventStorageKey}/cover/${$scope.delCoverName}`);
             $scope.storageCover = $firebaseStorage(storageRefCover);
@@ -385,6 +380,9 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
 
       } else {
         console.log(`invalid form...`);
+        if (!$scope.imageURLS) {
+          $scope.imageURLS = [];
+        }
       }
     } catch (e) {
       console.log(e.message);

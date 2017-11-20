@@ -39,36 +39,38 @@
           </div>
         </div>
 
-        <div layout="row">
-          <md-input-container flex="55">
-            <label>Title</label>
-            <input ng-model="title">
-          </md-input-container>
-          <md-input-container flex>
-            <label>Category</label>
-            <md-select ng-model="selectedCategories" multiple="">
-              <md-option ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
-            </md-select>
-          </md-input-container>
-          <md-button class="md-icon-button" ng-click="star()" style="margin-top: 15px;">
-            <md-icon ng-show="starred" class="material-icons" style="color: yellow;">star</md-icon>
-            <md-icon ng-hide="starred" class="material-icons">star_border</md-icon>
-          </md-button>
-        </div>
+        <form name="municipalityItemForm">
+          <div layout="row">
+            <md-input-container flex="55">
+              <label>Title</label>
+              <input ng-model="title" required>
+            </md-input-container>
+            <md-input-container flex>
+              <label>Category</label>
+              <md-select ng-model="selectedCategories" multiple="" required>
+                <md-option ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
+              </md-select>
+            </md-input-container>
+            <md-button class="md-icon-button" ng-click="star()" style="margin-top: 15px;" required>
+              <md-icon ng-show="starred" class="material-icons" style="color: yellow;">star</md-icon>
+              <md-icon ng-hide="starred" class="material-icons">star_border</md-icon>
+            </md-button>
+          </div>
 
-        <div layout="row">
-          <md-input-container flex>
-            <label>Location</label>
-            <input ng-model="location">
-          </md-input-container>
-        </div>
+          <div layout="row">
+            <md-input-container flex>
+              <label>Location</label>
+              <input ng-model="location" required>
+            </md-input-container>
+          </div>
 
-        <div layout="row">
-          <md-input-container flex>
-            <label>Contact Details</label>
-            <input ng-model="contact">
-          </md-input-container>
-        </div>
+          <div layout="row">
+            <md-input-container flex>
+              <label>Contact Details</label>
+              <input ng-model="contact" required>
+            </md-input-container>
+          </div>
+        </form>
       </md-card>
 
       <md-card ng-show="add" layout-padding layout="column" flex="50">
