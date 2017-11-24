@@ -33,7 +33,7 @@ service("uploadService", function($http, $q) {
     return upl.then(handleSuccess, handleError);
 
   } // End upload function
-  
+
   function handleError(response, data) {
     if (!angular.isObject(response.data) ||!response.data.message) {
       return ($q.reject("An unknown error occurred."));
@@ -65,6 +65,9 @@ function config($locationProvider, $routeProvider, $mdDateLocaleProvider, $mdThe
   }).
   when('/municipality/:municipalityId', {
     template: '<municipality-detail></municipality-detail>'
+  }).
+  when('/settings', {
+    template: '<settings-content></settings-content>'
   }).
   when('/events', {
     template: '<event-content></event-content>'

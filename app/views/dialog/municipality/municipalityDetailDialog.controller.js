@@ -83,7 +83,9 @@ controller("addMunicipalityDetailDialogController", function($scope, $firebaseSt
                   imageNames: $scope.imageNames,
                   coverURL: $scope.coverURL,
                   coverName: $scope.coverName,
-                  starred: $scope.starred
+                  starred: $scope.starred,
+                  latlon: $scope.latlon,
+                  description: $scope.description
                 }).then(function(municipalities) {
                   var id = municipalities.key;
                   console.log(`added record with id: ${id}`);
@@ -186,6 +188,8 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
     $scope.imageNames = itemData.imageNames;
     $scope.imageURLS = itemData.imageURLS;
     $scope.starred = itemData.starred;
+    $scope.latlon = itemData.latlon;
+    $scope.description = itemData.description;
   });
 
   $scope.selectCover = function(file) {
@@ -248,7 +252,7 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
     // $scope.save();
   }
 
-  $scope.save = function() {
+  $scope.uploadFile = function() {
     if ($scope.coverURL === undefined || $scope.coverURL == null) {
       console.log(`invalid no cover`);
       $scope.coverURL = false;
@@ -273,6 +277,8 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
         record.imageNames = $scope.imageNames;
         record.imageURLS = $scope.imageURLS;
         record.starred = $scope.starred;
+        record.latlon = $scope.latlon;
+        recrod.description = $scope.description;
 
         $scope.municipalityDatabase.$save(record).then(function () {
           if ($scope.delCoverName) {
@@ -306,11 +312,6 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
     } catch (e) {
       console.log(e.message);
     }
-
-  }
-
-  $scope.uploadFile = function() {
-    $scope.save();
   }
 
   $scope.closeDialog = function() {
