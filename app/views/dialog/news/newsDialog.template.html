@@ -1,0 +1,55 @@
+<md-dialog style="  max-width: 50%; max-height: 90%; width: 50%; height: 90%; border-radius: 0;" aria-label="event dialog" flex="45">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button aria-label="Open for menu" class="md-icon-button" ng-click="closeDialog()">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <p class="dialogTitle">{{dialogTitle}}</p>
+      <span flex></span>
+      <md-button ng-show="add" ng-click="uploadFile()">Submit</md-button>
+      <md-button ng-show="edit" ng-click="uploadFile()">Save</md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content layout-margin>
+    <div layout="column">
+      <div ng-show="add" layout="column">
+        <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*" required>Add Cover</md-button>
+        <div style="margin-bottom: 25px;">
+          <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+          style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+        </div>
+      </div>
+
+      <div ng-show="edit" layout="column">
+        <div layout="column" ng-hide="coverURL">
+          <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*">Choose Cover</md-button>
+          <div style="margin-bottom: 25px;">
+            <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+            style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+          </div>
+        </div>
+
+        <div layout="column" ng-show="coverURL" style="position: relative;">
+          <img ng-src="{{coverURL}}" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+          style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+          <md-button class="md-icon-button" ng-click="deleteCover(coverName)" style="position: absolute; top: 0; right: 0; color: red;">
+            <md-icon class="material-icons">delete_forever</md-icon>
+          </md-button>
+        </div>
+      </div>
+
+      <form name="newsForm">
+        <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
+          <label>Title</label>
+          <input ng-model="title" required>
+        </md-input-container>
+
+        <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
+          <label>Link</label>
+          <input ng-model="link" required>
+        </md-input-container>
+
+      </form>
+    </div>
+  </md-dialog-content>
+</md-dialog>

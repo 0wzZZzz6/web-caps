@@ -74,22 +74,19 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
                 console.log("[UPLOADING] data");
 
                 if($scope.allDay){
-                  $scope.sfromDate = null;
-                  $scope.stoDate = null;
-                  $scope.sdate = $scope.date.getTime();
+                  $scope.sDate = $scope.startDate.getTime();
+                  $scope.eDate = null;
                 } else {
-                  $scope.sfromDate = $scope.fromDate.getTime();
-                  $scope.stoDate = $scope.toDate.getTime();
-                  $scope.sdate = null;
+                  $scope.sDate = $scope.startDate.getTime();
+                  $scope.eDate = $scope.endDate.getTime();
                 }
 
                 $scope.events.$add({
                   title: $scope.title,
                   location: $scope.location,
                   allDay: $scope.allDay,
-                  date: $scope.sdate,
-                  fromDate: $scope.sfromDate,
-                  toDate: $scope.stoDate,
+                  startDate: $scope.sDate,
+                  endDate: $scope.eDate,
                   description: $scope.description,
                   fromTime:  $scope.time.from.getHours() + ":" + $scope.time.from.getMinutes(),
                   toTime: $scope.time.to.getHours() + ":" + $scope.time.to.getMinutes(),
@@ -175,9 +172,6 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
     from: new Date(),
     to: new Date()
   };
-  // $scope.fromDate = new Date();
-  // $scope.toDate = new Date();
-  // $scope.date = new Date();
   $scope.imageURLS = [];
   $scope.imageNames = [];
   $scope.starred = false;
@@ -217,10 +211,10 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
     $scope.time.to.setMinutes(toTime[1]);
     $scope.starred = eventData.starred;
     if ($scope.allDay) {
-      $scope.date = new Date(eventData.date);
+      $scope.startDate = new Date(eventData.startDate);
     } else {
-      $scope.fromDate = new Date(eventData.fromDate);
-      $scope.toDate = new Date(eventData.toDate);
+      $scope.startDate = new Date(eventData.startDate);
+      $scope.endDate = new Date(eventData.endDate);
     }
 
 
@@ -237,10 +231,10 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
     $scope.old.toTime = eventData.toTime;
     $scope.old.starred = eventData.starred;
     if (eventData.allDay) {
-      $scope.old.date = eventData.date;
+      $scope.old.startDate = eventData.startDate;
     } else {
-      $scope.old.fromDate = eventData.fromDate;
-      $scope.old.toDate = eventData.toDate;
+      $scope.old.startDate = eventData.startDate;
+      $scope.old.endDate = eventData.endDate;
     }
 
 
@@ -345,13 +339,11 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
         record.toTime = $scope.time.to.getHours() + ":" + $scope.time.to.getMinutes();
         record.starred = $scope.starred;
         if ($scope.allDay) {
-          record.fromDate = null;
-          record.toDate = null;
-          record.date = $scope.date.getTime();
+          record.startDate = $scope.startDate.getTime();
+          record.endDate = null;
         } else {
-          record.fromDate = $scope.fromDate.getTime();
-          record.toDate = $scope.toDate.getTime();
-          record.date = null;
+          record.startDate = $scope.startDate.getTime();
+          record.endDate = $scope.endDate.getTime();
         }
 
         $scope.eventDatabase.$save(record).then(function () {
@@ -403,10 +395,10 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
     $scope.current.toTime = $scope.time.to.getHours() + ":" + $scope.time.to.getMinutes();
     $scope.current.starred = $scope.starred;
     if ($scope.allDay) {
-      $scope.current.date = $scope.date.getTime();
+      $scope.current.startDate = $scope.startDate.getTime();
     } else {
-      $scope.current.fromDate = $scope.fromDate.getTime();
-      $scope.current.toDate = $scope.toDate.getTime();
+      $scope.current.startDate = $scope.startDate.getTime();
+      $scope.current.endDate = $scope.endDate.getTime();
     }
     if ($scope.isEquivalent($scope.current, $scope.old)) {
       $mdDialog.hide();

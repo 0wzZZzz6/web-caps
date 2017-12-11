@@ -20,7 +20,7 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
   $scope.starred = false;
   $scope.query = {
     order: 'name',
-    limit: 5,
+    limit: 10,
     page: 1
   };
 

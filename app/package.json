@@ -8,5 +8,8 @@
     "postinstall": "bower install",
     "prestart": "",
     "start": "http-server -a localhost -p 8011 -c-1"
+  },
+  "dependencies": {
+    "angular-material-time-picker": "^1.0.7"
   }
 }

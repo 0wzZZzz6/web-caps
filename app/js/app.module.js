@@ -12,6 +12,7 @@ angular.module("capstone-web", [
   "eventContent",
   "municipalityContent",
   "settingsContent",
+  "homeContent",
   "municipalityDetail",
   "ngFileUpload"
 ]);

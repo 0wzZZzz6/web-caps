@@ -92,7 +92,7 @@ table[md-table] .md-checkbox-cell {
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
-/*--------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------*/
 
 md-dialog.fullscreen-dialog {
   max-width: 100%;
@@ -101,17 +101,7 @@ md-dialog.fullscreen-dialog {
   height: 100%;
   border-radius: 0;
 }
-
-
-/*---------------------------------*/
-/*md-dialog.sampleDialog {
-  max-width: 100%;
-  max-height: 100%;
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-}*/
----------------------------------
+/*-------------------------------------------------------------------------------------------------------------------------------*/
 
 .inputdemoErrorsAdvanced {
 /* NOTE: Check the demo's HTML to see some additional RTL support CSS */
@@ -140,3 +130,19 @@ md-dialog.fullscreen-dialog {
   bottom: 7px;
   opacity: 1;
 }
+/*-------------------------------------------------------------------------------------------------------------------------------*/
+.virtualRepeatdemoHorizontalUsage #horizontal-container {
+  height: 250px;
+  width: 100%;
+  max-width: auto; }
+
+.virtualRepeatdemoHorizontalUsage .repeated-item {
+  display: inline-block;
+  /*max-width: 25%;*/
+  width: 240px; }
+
+.virtualRepeatdemoHorizontalUsage md-content {
+  margin: 16px; }
+
+.virtualRepeatdemoHorizontalUsage md-virtual-repeat-container {
+  border: solid 1px grey; }

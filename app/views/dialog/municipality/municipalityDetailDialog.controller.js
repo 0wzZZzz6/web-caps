@@ -45,12 +45,13 @@ controller("addMunicipalityDetailDialogController", function($scope, $firebaseSt
     console.log(`uploading...`);
     var completed = true;
     $scope.municipalityStorageKey = `${municipality}_` + Math.random().toString(36).substr(2, 5);
+    console.log($scope.municipalityStorageKey);
     console.log($scope.municipalityItemForm.$valid);
     console.log($scope.fileCover);
     console.log($scope.fileList);
 
     try {
-      if ($scope.municipalityItemForm.$valid && $scope.fileCover && $scope.fileList ) {
+      if ($scope.municipalityItemForm.$valid && $scope.fileCover && $scope.fileList) {
         var storageRef = firebase.storage().ref(`/Photos/${municipality}/${$scope.municipalityStorageKey}/cover/${$scope.fileCover.name}`);
         $scope.storage = $firebaseStorage(storageRef);
         var uploadTaskCover = $scope.storage.$put($scope.fileCover);
@@ -85,7 +86,8 @@ controller("addMunicipalityDetailDialogController", function($scope, $firebaseSt
                   coverName: $scope.coverName,
                   starred: $scope.starred,
                   latlon: $scope.latlon,
-                  description: $scope.description
+                  description: $scope.description,
+                  stars: new Object()
                 }).then(function(municipalities) {
                   var id = municipalities.key;
                   console.log(`added record with id: ${id}`);
@@ -190,6 +192,8 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
     $scope.starred = itemData.starred;
     $scope.latlon = itemData.latlon;
     $scope.description = itemData.description;
+
+    console.log(`${$scope.municipalityStorageKey}`);
   });
 
   $scope.selectCover = function(file) {
@@ -278,7 +282,7 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
         record.imageURLS = $scope.imageURLS;
         record.starred = $scope.starred;
         record.latlon = $scope.latlon;
-        recrod.description = $scope.description;
+        record.description = $scope.description;
 
         $scope.municipalityDatabase.$save(record).then(function () {
           if ($scope.delCoverName) {

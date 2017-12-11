@@ -37,6 +37,9 @@
             <md-button class="md-icon-button" ng-click="deleteCover(coverName)" style="position: absolute; top: 0; right: 0; color: red;">
               <md-icon class="material-icons">delete_forever</md-icon>
             </md-button>
+            <md-button class="md-icon-button" ng-click="deleteCover(coverName)" style="position: absolute; top: 0; right: 35px; color: red;">
+              <md-icon class="material-icons">delete_forever</md-icon>
+            </md-button>
           </div>
         </div>
 
@@ -65,9 +68,9 @@
           <div layout="column" ng-hide="allDay">
             <label>Date</label>
             <div layout="row">
-              <md-datepicker ng-model="fromDate" md-placeholder="From" ng-required="!allDay"></md-datepicker>
+              <md-datepicker ng-model="startDate" md-placeholder="From" ng-required="!allDay"></md-datepicker>
               <span flex="20"></span>
-              <md-datepicker ng-model="toDate" md-placeholder="To" ng-required="!allDay"></md-datepicker>
+              <md-datepicker ng-model="endDate" md-placeholder="To" ng-required="!allDay"></md-datepicker>
             </div>
 
             <label>Time</label>
@@ -81,7 +84,7 @@
           <div layout="column" ng-show="allDay">
             <label>Date</label>
             <div layout="row">
-              <md-datepicker ng-model="date" md-placeholder="Enter Date" ng-required="allDay"></md-datepicker>
+              <md-datepicker ng-model="startDate" md-placeholder="Enter Date" ng-required="allDay"></md-datepicker>
             </div>
             <label>Time</label>
             <div layout="row">
@@ -94,7 +97,7 @@
           <div style="margin-top: 25px;">
             <md-input-container class="md-block input-style" flex >
               <label>Event Description</label>
-              <textarea ng-model="description" md-maxlength="150" rows="4" md-select-on-focus  required></textarea>
+              <textarea ng-model="description" md-maxlength="2000" rows="4" md-select-on-focus  required></textarea>
             </md-input-container>
           </div>
         </form>

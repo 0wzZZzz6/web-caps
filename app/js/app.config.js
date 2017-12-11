@@ -71,6 +71,12 @@ function config($locationProvider, $routeProvider, $mdDateLocaleProvider, $mdThe
   }).
   when('/events', {
     template: '<event-content></event-content>'
+  }).
+  when('/home', {
+    template: '<home-content></home-content>'
+  })
+  .otherwise({
+    redirectTo : '/home'
   });
 }
 ]);

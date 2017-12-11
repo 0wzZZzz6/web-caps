@@ -64,8 +64,8 @@
               <md-icon ng-hide="event.starred" class="material-icons">star_border</md-icon>
             </td>
             <td md-cell class="oneLineText title">{{event.title}}</td>
-            <td md-cell ng-show="event.allDay">{{event.date | date}}</td>
-            <td md-cell ng-hide="event.allDay">{{event.fromDate | date}} - {{event.toDate | date}}</td>
+            <td md-cell ng-show="event.allDay">{{event.startDate | date}}</td>
+            <td md-cell ng-hide="event.allDay">{{event.startDate | date}} - {{event.endDate | date}}</td>
             <td md-cell class="oneLineText location">{{event.location}}</td>
             <td md-cell class="oneLineText description">{{event.description}}</td>
           </tr>
