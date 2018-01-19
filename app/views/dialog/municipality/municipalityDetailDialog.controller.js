@@ -113,11 +113,11 @@ controller("addMunicipalityDetailDialogController", function($scope, $firebaseSt
 
   $scope.toast = function(text) {
     var last = {
-        bottom: true,
-        top: false,
-        left: false,
-        right: true
-      };
+      bottom: true,
+      top: false,
+      left: false,
+      right: true
+    };
 
     $scope.toastPosition = angular.extend({}, last);
 
@@ -286,21 +286,21 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
 
         $scope.municipalityDatabase.$save(record).then(function () {
           if ($scope.delCoverName) {
-          var storageRefCover = firebase.storage().ref(`/Photos/${municipality}/${$scope.municipalityStorageKey}/cover/${$scope.delCoverName}`);
-          $scope.storageCover = $firebaseStorage(storageRefCover);
-          $scope.storageCover.$delete().then(function() {
-            console.log("successfully deleted cover!");
-          });
+            var storageRefCover = firebase.storage().ref(`/Photos/${municipality}/${$scope.municipalityStorageKey}/cover/${$scope.delCoverName}`);
+            $scope.storageCover = $firebaseStorage(storageRefCover);
+            $scope.storageCover.$delete().then(function() {
+              console.log("successfully deleted cover!");
+            });
           }
 
           if ($scope.delImageNames) {
-          for (var i = 0; i < $scope.delImageNames.length; i++) {
-            var storageRefSamples = firebase.storage().ref(`/Photos/${municipality}/${$scope.municipalityStorageKey}/${$scope.delImageNames[i]}`);
-            $scope.storageSamples = $firebaseStorage(storageRefSamples);
-            $scope.storageSamples.$delete().then(function() {
-              console.log("successfully deleted sample!");
-            });
-          }
+            for (var i = 0; i < $scope.delImageNames.length; i++) {
+              var storageRefSamples = firebase.storage().ref(`/Photos/${municipality}/${$scope.municipalityStorageKey}/${$scope.delImageNames[i]}`);
+              $scope.storageSamples = $firebaseStorage(storageRefSamples);
+              $scope.storageSamples.$delete().then(function() {
+                console.log("successfully deleted sample!");
+              });
+            }
           }
 
           console.log(`successfully updated`);
@@ -324,11 +324,11 @@ controller("editMunicipalityDetailDialogController", function($scope, $firebaseS
 
   $scope.toast = function(text) {
     var last = {
-        bottom: true,
-        top: false,
-        left: false,
-        right: true
-      };
+      bottom: true,
+      top: false,
+      left: false,
+      right: true
+    };
 
     $scope.toastPosition = angular.extend({}, last);
 

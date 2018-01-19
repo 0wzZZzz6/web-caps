@@ -111,7 +111,7 @@
             <md-grid-tile ng-repeat="imageURL in imageURLS">
               <div layout="column" style="position: relative;">
                 <img ng-src="{{imageURL}}" style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
-                <md-button class="md-icon-button" ng-click="deleteSample($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                <md-button class="md-icon-button" ng-click="s($index)" style="position: absolute; top: 0; right: 0; color: red;">
                   <md-icon class="material-icons">delete_forever</md-icon>
                 </md-button>
               </div>
@@ -128,5 +128,6 @@
           </md-grid-list>
         </div>
       </md-card>
+      
   </md-dialog-content>
 </md-dialog>

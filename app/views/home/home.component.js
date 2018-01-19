@@ -92,6 +92,6 @@ controller("homeController", function($scope, $firebaseArray, $firebaseStorage, 
       .position(pinTo)
       .hideDelay(3000)
     );
-  }
+}
 
 });

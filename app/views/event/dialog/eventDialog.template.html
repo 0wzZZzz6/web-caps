@@ -1,0 +1,185 @@
+<div ng-controller="eventDialogController" layout="column" ng-cloak layout-wrap>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button aria-label="Open for menu" class="md-icon-button" ng-disabled="showProgress" ng-click="closeDialog($event)">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <p class="dialogTitle">{{dialogTitle}}</p>
+      <span flex></span>
+      <md-button ng-show="add" ng-disabled="showProgress" ng-click="uploadFile()">Submit</md-button>
+      <md-button ng-show="edit" ng-disabled="showProgress" ng-click="uploadFile()">Save</md-button>
+    </div>
+  </md-toolbar>
+  <div layout="column">
+    <md-progress-linear ng-show="showProgress" md-mode="indeterminate"></md-progress-linear>
+    <div layout-margin >
+      <div layout="row">
+        <div layout-padding layout="column" flex="50">
+          <div ng-show="add" layout="column">
+            <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*" required>
+              <span ng-hide="fileCover">Choose Cover</span>
+              <span ng-show="fileCover">Change Cover</span>
+            </md-button>
+            <div style="margin-bottom: 25px;" ng-show="cover">
+              <img ngf-thumbnail="cover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+            </div>
+          </div>
+
+          <div ng-show="edit" style="margin-bottom: 25px;">
+            <div layout="column" ng-hide="coverURL">
+              <!-- <md-button ng-hide="cover" class="md-raised" ngf-select="selectCover($file)" accept="image/*" required>
+                <span ng-hide="cover">Choose Cover</span>
+                <span >Change Cover</span>
+              </md-button> -->
+              <div ng-show="cover" style="margin-bottom: 25px; position: relative;">
+                <img ngf-thumbnail="cover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+                style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+                <!-- <md-button class="md-icon-button" ngf-select="selectCover($file)" style="position: absolute; top: 0; right: 0; color: red;">
+                  <md-icon class="material-icons">delete_forever</md-icon>
+                </md-button> -->
+                <md-button ngf-select="selectCover($file)" class="md-primary" style="position: absolute; top: 0; right: 0;">Change Cover</md-button>
+              </div>
+            </div>
+            <!-- <md-progress-linear md-mode="indeterminate"></md-progress-linear> -->
+            <div layout="column" ng-show="coverURL" style="position: relative;">
+              <img ng-src="{{coverURL}}" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+              <!-- <md-button class="md-icon-button" ng-click="deleteCover(coverName)" style="position: absolute; top: 0; right: 0; color: red;">
+                <md-icon class="material-icons" style="color: green;">delete_forever</md-icon>
+              </md-button> -->
+               <md-button ngf-select="replaceCover($file, cover)" class="md-primary" style="position: absolute; top: 0; right: 0;">Change Cover</md-button>
+            </div>
+          </div>
+
+          <form name="eventForm">
+            <div layout="row">
+              <md-input-container class="md-block input-style" flex>
+                <label>Event Title</label>
+                <input ng-model="title" required>
+              </md-input-container>
+              <span flex="5"></span>
+              <md-button class="md-icon-button" ng-click="star()">
+                <md-icon ng-show="starred" class="material-icons" style="color: yellow;">star</md-icon>
+                <md-icon ng-hide="starred" class="material-icons">star_border</md-icon>
+              </md-button>
+            </div>
+
+            <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
+              <label>Event Location</label>
+              <input ng-model="location" required>
+            </md-input-container>
+
+            <div layout="row" flex>
+              <div layout="row">
+                <md-checkbox ng-model="allDay" aria-label="Checkbox All-day">
+                  All-day
+                </md-checkbox>
+              </div>
+            </div>
+
+            <div layout="column" ng-hide="allDay">
+              <label>Date</label>
+              <div layout="row">
+                <md-datepicker ng-model="startDate" md-placeholder="From" ng-required="!allDay"></md-datepicker>
+                <span flex="15"></span>
+                <md-datepicker ng-model="endDate" md-placeholder="To" ng-required="!allDay"></md-datepicker>
+              </div>
+
+              <label>Time</label>
+              <div layout="row">
+                <md-time-picker ng-model="time.from" message="message" ng-required="!allDay"></md-time-picker>
+                <span flex="5"></span>
+                <md-time-picker ng-model="time.to" message="message" ng-required="!allDay"></md-time-picker>
+              </div>
+            </div>
+
+            <div layout="column" ng-show="allDay">
+              <label>Date</label>
+              <div layout="row">
+                <md-datepicker ng-model="startDate" md-placeholder="Enter Date" ng-required="allDay"></md-datepicker>
+              </div>
+              <label>Time</label>
+              <div layout="row">
+                <md-time-picker ng-model="time.from" message="message" required></md-time-picker>
+                <span flex="5"></span>
+                <md-time-picker ng-model="time.to" message="message" required></md-time-picker>
+              </div>
+            </div>
+
+            <div style="margin-top: 25px;">
+              <md-input-container class="md-block input-style" flex >
+                <label>Event Description</label>
+                <textarea ng-model="description" md-maxlength="1000" max-rows="10" rows="5" required></textarea>
+              </md-input-container>
+            </div>
+
+            <md-input-container class="md-block input-style" flex style="margin-bottom: 0px;">
+              <label>Tag a Municipality</label>
+              <md-select ng-model="taggedMunicipality" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader" multiple="" required>
+                <md-select-header class="demo-select-header">
+                  <input ng-model="searchTerm" placeholder="Search for municipality.." class="demo-header-searchbox md-text" type="search">
+                </md-select-header>
+                <md-optgroup label="municipalities">
+                  <md-option ng-value="municipality" ng-repeat="municipality in municipalities |
+                  filter:searchTerm">{{municipality}}</md-option>
+                </md-optgroup>
+              </md-select>
+            </md-input-container>
+
+          </form>
+        </div>
+        <div ng-show="add" layout-padding layout="column" flex="50">
+          <div layout="column">
+            <md-button class="md-raised" ngf-select="selectPhotos($files)" accept="image/*" ngf-multiple="true">Add Sample Photos</md-button>
+          </div>
+
+          <md-content ng-cloak="" style="overflow: auto; min-height:auto; max-height:100%; height:460px;">
+            <md-grid-list  md-cols="3" md-row-height="3:2.7">
+              <md-grid-tile ng-repeat="photo in photos">
+                <div layout="column" style="position: relative;">
+                  <img ngf-thumbnail="photo || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
+                  style="height: 150px; width: 165px; display: block; margin: auto; object-fit: cover">
+                  <md-button class="md-icon-button" ng-click="removePhoto($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                    <md-icon class="material-icons" style="color: green;">delete_forever</md-icon>
+                  </md-button>
+                </div>
+              </md-grid-tile>
+            </md-grid-list>
+          </md-content>
+        </div>
+        <div ng-show="edit" layout-padding layout="column" flex="50">
+          <div layout="column">
+            <md-button class="md-raised" ngf-select="selectPhotos($files)" accept="image/*" ngf-multiple="true">Add Samples</md-button>
+            <md-progress-linear ng-show="showProgress_uploading" md-mode="indeterminate"></md-progress-linear>
+          </div>
+          <md-content ng-cloak="" style="overflow: auto; min-height:auto; max-height:100%; height:450px;">
+            <md-grid-list  md-cols="3" md-row-height="3:2.7">
+              <md-grid-tile ng-repeat="imageURL in imageURLS">
+                <div layout="column" style="position: relative;">
+                  <img ng-src="{{imageURL}}" style="height: 150px; width: 165px; display: block; margin: auto; object-fit: cover">
+                  <md-button class="md-icon-button" ng-click="removeImageURL($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                    <md-icon class="material-icons" style="color: green;">delete_forever</md-icon>
+                  </md-button>
+                </div>
+              </md-grid-tile>
+            </md-grid-list>
+
+            <!-- additional photos -->
+            <md-grid-list  md-cols="3" md-row-height="3:2.7">
+              <md-grid-tile ng-repeat="photo in photos">
+                <div layout="column" style="position: relative;">
+                  <img ngf-thumbnail="photo || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
+                  style="height: 150px; width: 165px; display: block; margin: auto; object-fit: cover">
+                  <md-button class="md-icon-button" ng-click="removePhoto($index)" style="position: absolute; top: 0; right: 0;">
+                    <md-icon class="material-icons" style="color: green;">delete_forever</md-icon>
+                  </md-button>
+                </div>
+              </md-grid-tile>
+            </md-grid-list>
+          </md-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

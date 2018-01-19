@@ -1,22 +1,68 @@
 <div ng-controller="municipalityDetailController" layout="column" layout-fill="layout-fill" ng-cloak>
   <md-content>
-    <md-tabs flex layout="column" md-stretch-tabs="always" md-dynamic-height md-border-bottom>
-      <md-tab flex layout="column" label="Tab1">
-        <p>
-          asdasdasd
-        </p>
+    <md-tabs md-selected="selectedIndex" flex layout="column" md-stretch-tabs="always" md-dynamic-height md-border-bottom>
+      <md-tab flex layout="column" label="About">
+        <md-progress-linear ng-hide="isReady" md-mode="indeterminate"></md-progress-linear>
+        <md-content layout="row">
+          <div flex layout-padding>
+            <md-card>
+              <md-card-content>
+                <h2>Municipality Description</h2>
+                <md-input-container md-no-float class="md-block">
+                  <textarea ng-model="description" placeholder="Description here..." md-maxlength="1000" max-rows="10" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+              </md-card-content>
+              <md-card-footer layout="row" layout-align="end center">
+                <md-button class="md-raised md-primary" ng-click="saveDescription()">Save</md-button>
+              </md-card-footer>
+            </md-card>
+          </div>
+          <div flex layout-padding>
+            <md-card>
+              <md-card-content>
+                <h2>Sample Pictures</h2>
+                <md-content ng-cloak="" ng-show="imageNames.length" style="overflow: auto; min-height:auto; max-height:100%; height:350px;">
+                  <md-grid-list md-cols="3" md-row-height="4:4">
+                    <md-grid-tile ng-repeat="imageURL in imageURLS">
+                      <div layout="column" style="position: relative;">
+                        <img ng-src="{{imageURL}}" style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+                        <md-button class="md-icon-button" ng-click="deleteSample($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                          <md-icon class="material-icons">delete_forever</md-icon>
+                        </md-button>
+                      </div>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </md-content>
+              </md-card-content>
+              <md-card-footer layout="row" layout-align="end center">
+                <md-button class="md-raised md-primary" ngf-select="selectSample($files)" accept="image/*" ngf-multiple="true">Upload</md-button>
+              </md-card-footer>
+            </md-card>
+          </div>
+        </md-content>
       </md-tab>
-      <md-tab flex layout="column" label="Tab2">
+      <md-tab flex layout="column" label="More">
         <md-card flex>
           <!-- main toolbar -->
           <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
             <div class="md-toolbar-tools" layout="row">
               <div layout="row" flex style="padding-top: 15px;">
-                <md-button class="md-icon-button" ng-click="add($event)">
+                <!-- <md-button class="md-icon-button" ng-click="add($event)">
+                  <md-icon class="material-icons">add</md-icon>
+                </md-button> -->
+                <md-button class="md-icon-button" aria-label="Add" href="#/municipality/{{municipalityId}}/add">
+                  <md-tooltip md-direction="{{demo.tipDirection}}">
+                    Add
+                  </md-tooltip>
                   <md-icon class="material-icons">add</md-icon>
                 </md-button>
 
-                <span flex></span>
+                <md-input-container style="margin: 0px;" md-no-float class="md-block">
+                  <md-icon class="material-icons">search</md-icon>
+                  <input class="md-body-1" ng-model="search" ng-focus="query.page = 1" type="text" placeholder="Search">
+                </md-input-container>
+
+                <span flex="10"></span>
 
                 <md-input-container flex="20" style="margin: 0px;" md-no-float class="md-block">
                   <md-select class="md-body-1" ng-model="selectedCategories" ng-change="selectCatergory()" placeholder="Category">
@@ -24,12 +70,11 @@
                   </md-select>
                 </md-input-container>
 
-                <span flex="5"></span>
+                <span flex></span>
 
-                <md-input-container style="margin: 0px;" md-no-float class="md-block">
-                  <md-icon class="material-icons">search</md-icon>
-                  <input class="md-body-1" ng-model="search" ng-focus="query.page = 1" type="text" placeholder="Search">
-                </md-input-container>
+                <md-button class="md-icon-button" ng-click="settings($event)">
+                  <md-icon class="material-icons">settings</md-icon>
+                </md-button>
               </div>
             </div>
           </md-toolbar>
@@ -64,21 +109,36 @@
                 <tr md-row>
                   <th style="width: 2%"></th>
                   <th md-column style="width: 28%"><span>Title</span></th>
-                  <th md-column style="width: 25%"><span>Category</span></th>
+                  <th md-column style="width: 20%"><span>Category</span></th>
                   <th md-column style="width: 30%"><span>Location</span></th>
                   <th md-column style="width: 15%">Contact</th>
+                  <th md-column style="width: 5%"></th>
                 </tr>
               </thead>
               <tbody md-body>
-                <tr id="item" md-row md-select="item" md-select-id="name" md-auto-select="options.autoSelect" ng-repeat="item in municipality_items | filter: selectedCategories | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(item)">
+                <tr md-row md-select="item" ng-repeat="item in municipality_items | filter: selectedCategories | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(item)">
                   <td md-cell>
                     <md-icon ng-show="item.starred" class="material-icons" style="color: yellow;">star</md-icon>
                     <md-icon ng-hide="item.starred" class="material-icons">star_border</md-icon>
                   </td>
-                  <td class="oneLineText md-body-1" md-cell>{{item.title}}</td>
+                  <td class="oneLineText md-body-1 title" md-cell>{{item.title}}</td>
                   <td class="oneLineText md-body-1" md-cell>{{item.category.join(', ')}}</td>
-                  <td class="oneLineText md-body-1" md-cell>{{item.location}}</td>
+                  <td class="oneLineText md-body-1 location" md-cell>{{item.location}}</td>
                   <td class="oneLineText md-body-1" md-cell>{{item.contact}}</td>
+                  <td md-cell layout="row">
+                    <md-button class="md-icon-button" aria-label="Edit" ng-click="selectedIndex = 0" href="#/municipality/{{municipalityId}}/edit/{{item.$id}}">
+                      <md-tooltip md-direction="{{demo.tipDirection}}">
+                        Edit
+                      </md-tooltip>
+                      <md-icon class="material-icons">edit</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Delete" ng-click="delete($event, item)">
+                      <md-tooltip md-direction="{{demo.tipDirection}}">
+                        Delete
+                      </md-tooltip>
+                      <md-icon class="material-icons">delete</md-icon>
+                    </md-button>
+                  </td>
                 </tr>
               </tbody>
             </table>

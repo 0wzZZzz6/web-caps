@@ -1,0 +1,132 @@
+<div ng-controller="mdetailDialogController">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button aria-label="Open for menu" class="md-icon-button" ng-click="closeDialog()">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <p class="dialogTitle">{{dialogTitle}}</p>
+      <span flex></span>
+      <md-button ng-show="add" ng-click="uploadFile()">Submit</md-button>
+      <md-button ng-show="edit" ng-click="uploadFile()">Save</md-button>
+    </div>
+  </md-toolbar>
+  <md-content layout="row">
+    <md-card layout-padding layout="column" flex="50">
+      <div ng-show="add" layout="column">
+        <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*" required>
+          <span ng-hide="fileCover">Choose Cover</span>
+          <span ng-show="fileCover">Change Cover</span>
+        </md-button>
+        <div style="margin-bottom: 25px;" ng-show="fileCover">
+          <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+          style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+        </div>
+      </div>
+
+      <div ng-show="edit" style="margin-bottom: 25px;">
+        <div layout="column" ng-hide="coverURL">
+          <md-button class="md-raised" ngf-select="selectCover($file)" accept="image/*" required>Choose Samples</md-button>
+          <div style="margin-bottom: 25px;">
+            <img ngf-thumbnail="fileCover || './thumb.jpg'" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+            style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+          </div>
+        </div>
+
+        <div layout="column" ng-show="coverURL" style="position: relative;">
+          <img ng-src="{{coverURL}}" alt="Cover" class="image" ngf-size="{quality:1.0, centerCrop: true}"
+          style="height: 300px; width: 100%; display: block; margin: auto; object-fit: cover; line-height: 50px; text-align: center;">
+          <md-button class="md-icon-button" ng-click="deleteCover(coverName)" style="position: absolute; top: 0; right: 0; color: red;">
+            <md-icon class="material-icons">delete_forever</md-icon>
+          </md-button>
+        </div>
+      </div>
+
+      <form name="municipalityItemForm">
+        <div layout="row">
+          <md-input-container flex="55">
+            <label>Title</label>
+            <input ng-model="title" required>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Category</label>
+            <md-select ng-model="selectedCategories" multiple="" required>
+              <md-option ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-button class="md-icon-button" ng-click="star()" style="margin-top: 15px;" required>
+            <md-icon ng-show="starred" class="material-icons" style="color: yellow;">star</md-icon>
+            <md-icon ng-hide="starred" class="material-icons">star_border</md-icon>
+          </md-button>
+        </div>
+
+        <div layout="row">
+          <md-input-container flex>
+            <label>Location</label>
+            <input ng-model="location" required>
+          </md-input-container>
+        </div>
+
+        <div layout="row">
+          <md-input-container flex>
+            <label>Contact Details</label>
+            <input ng-model="contact" required>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Latitude, Longitude</label>
+            <input ng-model="latlon" required/>
+            <div class="hint" style="color: grey;">
+              <a target="_blank" style="text-decoration: none;" href="http://nominatim.openstreetmap.org/search.php">Get the Latitude, Longitude here.</a>
+            </div>
+          </md-input-container>
+        </div>
+
+        <div layout="row">
+          <md-input-container flex ng-scrollbars>
+            <label>Description</label>
+            <textarea ng-model="description" md-maxlength="1000" rows="3" max-rows="6" required></textarea>
+          </md-input-container>
+        </div>
+      </form>
+    </md-card>
+
+    <md-card ng-show="add" layout-padding layout="column" flex="50">
+      <div layout="column">
+        <md-button class="md-raised" ngf-select="selectSample($files)" accept="image/*" ngf-multiple="true">Add Sample Photos</md-button>
+      </div>
+
+      <md-content ng-cloak="" style="overflow: auto; min-height:auto; max-height:100%; height:460px;">
+        <md-grid-list  md-cols="3" md-row-height="3:2.7">
+          <md-grid-tile ng-repeat="file in fileSamples">
+            <div layout="column" style="position: relative;">
+              <img ngf-thumbnail="file || '.jpg'" ngf-size="{quality:1.0, centerCrop: true}"
+              style="height: 150px; width: 150px; display: block; margin: auto; object-fit: cover">
+              <md-button class="md-icon-button" ng-click="deleteSample($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                <md-icon class="material-icons">delete_forever</md-icon>
+              </md-button>
+            </div>
+          </md-grid-tile>
+        </md-grid-list>
+      </md-content>
+    </md-card>
+
+    <md-card ng-show="edit" layout-padding layout="column" flex="50">
+      <div layout="column">
+        <md-button class="md-raised" ngf-select="selectSample($files)" accept="image/*" ngf-multiple="true">Add Samples</md-button>
+        <md-progress-linear ng-show="showProgress_uploading" md-mode="indeterminate"></md-progress-linear>
+      </div>
+      <md-content ng-cloak="" style="overflow: auto; min-height:auto; max-height:100%; height:450px;">
+        <md-grid-list  md-cols="3" md-row-height="3:2.7">
+          <md-grid-tile ng-repeat="imageURL in imageURLS">
+            <div layout="column" style="position: relative;">
+              <span>{{imageURL.name}}</span>
+              <img ng-src="{{imageURL}}" style="height: 150px; width: 170px; display: block; margin: auto; object-fit: cover">
+              <md-button class="md-icon-button" ng-click="deleteSample($index)" style="position: absolute; top: 0; right: 0; color: red;">
+                <md-icon class="material-icons">delete_forever</md-icon>
+              </md-button>
+            </div>
+          </md-grid-tile>
+        </md-grid-list>
+      </md-content>
+    </md-card>
+  </md-content>
+</div>

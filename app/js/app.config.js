@@ -1,5 +1,4 @@
 'use strict';
-
 angular.
 module('capstone-web').
 service("uploadService", function($http, $q) {
@@ -66,17 +65,43 @@ function config($locationProvider, $routeProvider, $mdDateLocaleProvider, $mdThe
   when('/municipality/:municipalityId', {
     template: '<municipality-detail></municipality-detail>'
   }).
-  when('/settings', {
-    template: '<settings-content></settings-content>'
+  when('/municipality/:municipalityId/:mode/:itemId', {
+    template: '<mdetail-dialog></mdetail-dialog>'
   }).
-  when('/events', {
+  when('/municipality/:municipalityId/:mode', {
+    template: '<mdetail-dialog></mdetail-dialog>'
+  }).
+  when('/event', {
     template: '<event-content></event-content>'
   }).
   when('/home', {
     template: '<home-content></home-content>'
-  })
-  .otherwise({
+  }).
+  when('/event/:mode/:itemId', {
+    template: '<event-dialog></event-dialog>',
+    resolve: {
+      // I will cause a 1 second delay
+      delay: function($q, $timeout) {
+        var delay = $q.defer();
+        $timeout(delay.resolve, 1000);
+        return delay.promise;
+      }
+    }
+  }).
+  when('/event/:mode', {
+    template: '<event-dialog></event-dialog>',
+    resolve: {
+      // I will cause a 1 second delay
+      delay: function($q, $timeout) {
+        var delay = $q.defer();
+        $timeout(delay.resolve, 1000);
+        return delay.promise;
+      }
+    }
+  }).
+  otherwise({
     redirectTo : '/home'
   });
+
 }
 ]);

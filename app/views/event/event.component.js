@@ -3,7 +3,7 @@ module("eventContent").
 component("eventContent", {
   templateUrl: "views/event/event.template.html"
 }).
-controller("eventController", function($scope, $firebaseArray, $firebaseStorage, $mdDialog, $mdToast) {
+controller("eventController", function($scope, $rootScope, $firebaseArray, $firebaseStorage, $mdDialog, $mdToast) {
 
   var THIS = this;
   $scope.selected = [];
@@ -23,6 +23,7 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
     limit: 10,
     page: 1
   };
+  $rootScope.isReady = true;
 
   var ref = firebase.database().ref();
   $scope.events = $firebaseArray(ref.child('events'));
@@ -66,7 +67,7 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
 
   $scope.selectRow = function(param) {
     THIS.EVENT = param;
-    console.log(THIS.EVENT.eventStorageKey);
+    console.log(THIS.EVENT.$id);
   };
 
   $scope.add = function(ev) {
@@ -108,36 +109,36 @@ controller("eventController", function($scope, $firebaseArray, $firebaseStorage,
     });
   }
 
-  $scope.delete = function(ev) {
+  $scope.delete = function(ev, event) {
     // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
-          .title(`Would you like to delete event: ${THIS.EVENT.title}?`)
-          .textContent(`All data of event: ${THIS.EVENT.title} will be deleted`)
+          .title(`Would you like to delete event: ${event.title}?`)
+          .textContent(`All data of event: ${event.title} will be deleted`)
           .ariaLabel('Lucky day')
           .targetEvent(ev)
           .ok('Delete')
           .cancel('Cancel');
 
     $mdDialog.show(confirm).then(function() {
-      $scope.events.$remove(THIS.EVENT);
+      $scope.events.$remove(event);
       $scope.selected = [];
       $scope.showOption = true;
 
-      var storageCoverRef = firebase.storage().ref(`/Photos/events/${THIS.EVENT.eventStorageKey}/cover/${THIS.EVENT.coverName}`);
+      var storageCoverRef = firebase.storage().ref(`/Photos/events/${event.eventStorageKey}/cover/${event.coverName}`);
       $scope.storageCover = $firebaseStorage(storageCoverRef);
       $scope.storageCover.$delete().then(function() {
         console.log(`successfully deleted! cover`);
       });
 
-      for(var i=0; i < THIS.EVENT.imageNames.length; i++) {
-        var storageSampleRef = firebase.storage().ref(`/Photos/events/${THIS.EVENT.eventStorageKey}/${THIS.EVENT.imageNames[i]}`);
+      for(var i=0; i < event.imageNames.length; i++) {
+        var storageSampleRef = firebase.storage().ref(`/Photos/events/${event.eventStorageKey}/${event.imageNames[i]}`);
         $scope.storageSample = $firebaseStorage(storageSampleRef);
         $scope.storageSample.$delete().then(function() {
           console.log(`successfully deleted! sample`);
         });
       }
 
-      $scope.toast(`Event: ${THIS.EVENT.title} successfully deleted.`);
+      $scope.toast(`Event: ${event.title} successfully deleted.`);
     }, function() {
       $mdDialog.hide();
     });

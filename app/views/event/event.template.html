@@ -4,14 +4,15 @@
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
       <div class="md-toolbar-tools">
         <div layout="row" flex style="padding-top: 15px;">
-          <md-button class="md-icon-button" ng-click="add($event)">
+          <!-- <md-button class="md-icon-button" ng-click="add($event)"> -->
+          <md-button class="md-icon-button" aria-label="Add" href="#/event/add">
             <md-tooltip md-direction="{{demo.tipDirection}}">
               Add
             </md-tooltip>
             <md-icon class="material-icons">add</md-icon>
           </md-button>
 
-          <span flex></span>
+          <span flex="20"></span>
 
           <md-input-container style="margin: 0px;" md-no-float class="md-block">
             <md-icon class="material-icons">search</md-icon>
@@ -36,7 +37,8 @@
           </md-tooltip>
           <md-icon class="material-icons">delete</md-icon>
         </md-button>
-        <md-button class="md-icon-button" ng-click="edit($event)">
+        <!-- <md-button class="md-icon-button" ng-click="edit($event)"> -->
+        <md-button class="md-icon-button" ng-href="#/municipality/{{item.id}}">
           <md-tooltip md-direction="{{demo.tipDirection}}">
             Edit
           </md-tooltip>
@@ -53,12 +55,14 @@
             <th md-column style="width: 2%"></th>
             <th md-column style="width: 28%;"><span>Event Title</span></th>
             <th md-column style="width: 20%;"><span>Date</span></th>
-            <th md-column style="width: 30%;">Location</th>
+            <th md-column style="width: 25%;">Location</th>
             <th md-column style="width: 20%;">Description</th>
+            <th md-column style="width: 5%"></th>
           </tr>
         </thead>
         <tbody md-body>
-          <tr md-row md-select="event" md-auto-select="options.autoSelect" ng-repeat="event in events | filter: search | limitTo: query.limit : (query.page -1) * query.limit" ng-click="selectRow(event)">
+           <!-- ng-click="selectRow(event)" md-auto-select="options.autoSelect"  -->
+          <tr md-row md-select="event" ng-repeat="event in events | filter: search | limitTo: query.limit : (query.page -1) * query.limit">
             <td md-cell>
               <md-icon ng-show="event.starred" class="material-icons" style="color: yellow;">star</md-icon>
               <md-icon ng-hide="event.starred" class="material-icons">star_border</md-icon>
@@ -68,6 +72,20 @@
             <td md-cell ng-hide="event.allDay">{{event.startDate | date}} - {{event.endDate | date}}</td>
             <td md-cell class="oneLineText location">{{event.location}}</td>
             <td md-cell class="oneLineText description">{{event.description}}</td>
+            <td md-cell layout="row">
+              <md-button class="md-icon-button" ng-disabled="isReady" aria-label="Edit" href="#/event/edit/{{event.$id}}">
+                <md-tooltip md-direction="{{demo.tipDirection}}">
+                  Edit
+                </md-tooltip>
+                <md-icon class="material-icons">edit</md-icon>
+              </md-button>
+              <md-button class="md-icon-button" ng-disabled="isReady" aria-label="Delete" ng-click="delete($event, event)">
+                <md-tooltip md-direction="{{demo.tipDirection}}">
+                  Delete
+                </md-tooltip>
+                <md-icon class="material-icons">delete</md-icon>
+              </md-button>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -1,0 +1,36 @@
+<div ng-controller="sampleController" layout="column" ng-cloak layout-wrap>
+  <h1>{{itemId}}</h1>
+  <h1>{{title}}</h1>
+  <h1>asdasd</h1>
+  <div flex="20">
+    <md-input-container>
+      <label>Vegetables</label>
+      <md-select ng-model="selectedVegetables" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader" multiple="">
+        <md-select-header class="demo-select-header">
+          <input ng-model="searchTerm" placeholder="Search for a vegetable.." class="demo-header-searchbox md-text" type="search">
+        </md-select-header>
+        <md-optgroup label="vegetables">
+          <md-option ng-value="vegetable" ng-repeat="vegetable in vegetables |
+          filter:searchTerm">{{vegetable}}</md-option>
+        </md-optgroup>
+      </md-select>
+    </md-input-container>
+  </div>
+  <h1>asdasd</h1>
+  <h1>asdasd</h1>
+  <h1>asdasd</h1>
+  <h1>asdasd</h1>
+  <h1>asdasd</h1>
+  <h1>asdasd</h1>
+  <h1>asdasd</h1>
+
+  <div layout="row">
+    <md-button class="md-icon-button" ng-click="delete($event, item)">
+      <md-icon class="material-icons">delete_forever</md-icon>
+    </md-button>
+    <md-button class="md-icon-button" ng-click="edit($event, item)">
+      <md-icon class="material-icons">edit</md-icon>
+    </md-button>
+  </div>
+
+</div>

@@ -1,8 +1,8 @@
 angular.
 module("capstone-web").
-controller("addEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdToast, $mdDialog, $timeout) {
-  var events = firebase.database().ref();
-  $scope.events = $firebaseArray(events.child('events'));
+controller("addEventDialogController", function($scope, $mdpTimePicker, $http, uploadService, $firebaseArray, $firebaseStorage, $mdToast, $mdDialog, $timeout, $element) {
+  var events = firebase.database().ref('events');
+  $scope.events = $firebaseArray(events);
 
   $scope.add = true;
   $scope.allDay = false;
@@ -18,6 +18,18 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
     from: new Date(),
     to: new Date()
   };
+
+  $scope.vegetables = ['Corn' ,'Onions' ,'Kale' ,'Arugula' ,'Peas', 'Zucchini'];
+  $scope.searchTerm;
+
+  $scope.clearSearchTerm = function() {
+    $scope.searchTerm = '';
+  };
+  // The md-select directive eats keydown events for some quick select
+  // logic. Since we have a search input here, we don't need that logic.
+  $element.find('input').on('keydown', function(ev) {
+    ev.stopPropagation();
+  });
 
   $scope.selectCover = function(file) {
     $scope.fileCover = file;
@@ -123,11 +135,11 @@ controller("addEventDialogController", function($scope, $mdpTimePicker, $http, u
 
   $scope.toast = function(text) {
     var last = {
-        bottom: true,
-        top: false,
-        left: false,
-        right: true
-      };
+      bottom: true,
+      top: false,
+      left: false,
+      right: true
+    };
 
     $scope.toastPosition = angular.extend({}, last);
 
@@ -410,11 +422,11 @@ controller("editEventDialogController", function($scope, $mdpTimePicker, $http, 
 
   $scope.toast = function(text) {
     var last = {
-        bottom: true,
-        top: false,
-        left: false,
-        right: true
-      };
+      bottom: true,
+      top: false,
+      left: false,
+      right: true
+    };
 
     $scope.toastPosition = angular.extend({}, last);
 

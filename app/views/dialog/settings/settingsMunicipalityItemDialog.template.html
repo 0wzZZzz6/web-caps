@@ -1,0 +1,46 @@
+<md-dialog aria-label="settings" flex="30" >
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button aria-label="Open for menu" class="md-icon-button" ng-click="closeDialog()">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <h2>Settings</h2>
+      <span flex></span>
+      <md-button ng-click="uploadFile()">Submit</md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content layout-margin layout="column" layout-align="center center">
+
+    <div layout="column" style="width: 100%;">
+      <div layout="row">
+        <md-input-container class="md-icon-float md-block" flex>
+          <label>Category</label>
+          <input ng-model="newCategory">
+        </md-input-container>
+
+        <md-button aria-label="Open for menu" class="md-icon-button" ng-click="addNewCategory($event)" style="margin-top: 15px;">
+          <md-icon class="material-icons">add</md-icon>
+        </md-button>
+      </div>
+
+      <div layout="column" flex >
+        <md-subheader class="md-no-sticky">Categories</md-subheader>
+        <md-list  style="height: 200px;">
+          <md-list-item ng-repeat="category in categories">
+
+            <span ng-hide="editMode">{{category.name}}</span>
+            <input type="text" ng-show="editMode" ng-model="category.name" ng-required />
+
+
+            <button data-ng-hide="editMode" data-ng-click="editMode = true; edit(category)" class="btn btn-default">Edit</button>
+            <button data-ng-show="editMode" data-ng-click="editMode = false; saveField()" class="btn btn-default">Save</button>
+            <button data-ng-show="editMode" data-ng-click="editMode = false; cancel()" class="btn btn-default">Cancel</button>
+
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+
+  </md-dialog-content>
+</md-dialog>

@@ -61,9 +61,25 @@
             <input ng-model="location" required>
           </md-input-container>
 
-          <md-checkbox ng-model="allDay" aria-label="Checkbox All-day">
-            All-day
-          </md-checkbox>
+          <div layout="row">
+            <md-checkbox ng-model="allDay" aria-label="Checkbox All-day">
+              All-day
+            </md-checkbox>
+
+            <md-input-container>
+              <label>Vegetables</label>
+              <md-select ng-model="selectedVegetables" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader" multiple="">
+                <md-select-header class="demo-select-header">
+                  <input ng-model="searchTerm" placeholder="Search for a vegetable.." class="demo-header-searchbox md-text" type="search">
+                </md-select-header>
+                <md-optgroup label="vegetables">
+                  <md-option ng-value="vegetable" ng-repeat="vegetable in vegetables |
+                  filter:searchTerm">{{vegetable}}</md-option>
+                </md-optgroup>
+              </md-select>
+            </md-input-container>
+          </div>
+
 
           <div layout="column" ng-hide="allDay">
             <label>Date</label>
@@ -100,6 +116,7 @@
               <textarea ng-model="description" md-maxlength="2000" rows="4" md-select-on-focus  required></textarea>
             </md-input-container>
           </div>
+
         </form>
       </md-card>
 
